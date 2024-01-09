@@ -37,13 +37,15 @@ router.post('/login', async (req, res) => {
   }
 });
 
-router.get('/', verifyToken, async (req, res)=>{
-  try{
-    const users = await User.getUser()
-    console.log(users)
-    res.status(200).json(users)
-  }catch(error){
-    res.status(500).json({error : 'Failed to fetch Users'})
+router.get('/', async (req, res) => {
+  try {
+    const allUsers = await User.getAllUsers(); 
+    res.status(200).json(allUsers);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to fetch users' });
   }
-})
+});
+
+
 module.exports = router;

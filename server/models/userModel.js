@@ -1,17 +1,17 @@
 // userModel.js
-const db = require('../config/db');
-const bcrypt = require('bcrypt');
+const db = require("../config/db");
+const bcrypt = require("bcrypt");
 
 const User = {
   createUser: (newUser) => {
     return new Promise((resolve, reject) => {
-        console.log(newUser)
-      db.query('INSERT INTO users SET ?', newUser, (err, results) => {
+      console.log(newUser);
+      db.query("INSERT INTO users SET ?", newUser, (err, results) => {
         if (err) {
-          if (err.code === 'ER_DUP_ENTRY') {
-            reject({ message: 'Phone number already exists' });
+          if (err.code === "ER_DUP_ENTRY") {
+            reject({ message: "Phone number already exists" });
           } else {
-            console.log(err)
+            console.log(err);
             reject(err);
           }
         } else {
@@ -23,31 +23,31 @@ const User = {
 
   getUserByPhoneNumber: (phone_number) => {
     return new Promise((resolve, reject) => {
-      db.query('SELECT * FROM users WHERE phone_number = ?', [phone_number], (err, results) => {
+      db.query(
+        "SELECT * FROM users WHERE phone_number = ?",
+        [phone_number],
+        (err, results) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(results[0]);
+          }
+        }
+      );
+    });
+  },
+
+  getAllUsers: () => {
+    return new Promise((resolve, reject) => {
+      db.query("SELECT * FROM users", (err, results) => {
         if (err) {
           reject(err);
         } else {
-          resolve(results[0]);
+          resolve(results);
         }
       });
     });
   },
-  
-
-   getUsers: ()=>{
-    return new Promise((resolve, reject)=>{
-      db.query('SELECT * FROM users', (err, result) => {
-        if(err){
-          reject(err);
-          console.log('Unable to fetch Users')
-        }else{
-          resolve(result)
-        }
-      })
-    })
-   }
-  
-  };
-
+};
 
 module.exports = User;
