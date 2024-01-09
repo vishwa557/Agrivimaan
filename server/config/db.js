@@ -6,7 +6,7 @@ const db = mysql.createConnection({
   port: 3306,
   user: 'root',
   password: 'root',
-  database: 'agrivimaan',
+  database: 'agrivimaandb',
 });
 
 db.connect((err) => {
@@ -20,8 +20,7 @@ db.connect((err) => {
       Name VARCHAR(255) NOT NULL,
       phone_number VARCHAR(20) NOT NULL,
       Password VARCHAR(255) NOT NULL,
-      address VARCHAR(255) NOT NULL,
-      role VARCHAR(50) NOT NULL DEFAULT 'user'
+      address VARCHAR(255) NOT NULL
     )
   `;
 

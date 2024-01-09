@@ -1,5 +1,5 @@
 // userModel.js
-const db = require('../db/db');
+const db = require('../config/db');
 const bcrypt = require('bcrypt');
 
 const User = {
@@ -32,7 +32,22 @@ const User = {
       });
     });
   },
-  // Other user-related methods...
-};
+  
+
+   getUsers: ()=>{
+    return new Promise((resolve, reject)=>{
+      db.query('SELECT * FROM users', (err, result) => {
+        if(err){
+          reject(err);
+          console.log('Unable to fetch Users')
+        }else{
+          resolve(result)
+        }
+      })
+    })
+   }
+  
+  };
+
 
 module.exports = User;

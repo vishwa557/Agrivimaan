@@ -2,6 +2,7 @@
 const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const config = require('../config/config')
 
 const registerUser = async (userData) => {
   try {
@@ -16,8 +17,7 @@ const registerUser = async (userData) => {
       Name: userData.Name,
       phone_number: userData.phone_number,
       Password: hashedPassword,
-      address: userData.address,
-      role: userData.role,
+      address: userData.address
     };
 // console.log(newUser);
     const createdUser = await User.createUser(newUser);
@@ -38,12 +38,13 @@ const loginUser = async (phone_number, password) => {
     if (!isMatch) {
       throw new Error('Invalid phone number or password');
     }
-    const token = jwt.sign({ phone_number: user.phone_number }, 'your_secret_key');
+    const token = jwt.sign({ phone_number: user.phone_number }, config.jwt_secret_key, {expiresIn: '1h'});
     return { token };
   } catch (error) {
     throw error;
   }
 };
+
 
 module.exports = {
   registerUser,
