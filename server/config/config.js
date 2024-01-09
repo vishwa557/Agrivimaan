@@ -6,5 +6,6 @@ module.exports = {
             password: "root",
             database: "agrivimaan"
     },
-    jwt_secret_key: "Agrivimaan_auth_key"
+    jwt_secret_key: "Agrivimaan_auth_key",
+    PORT : 8000
 }
