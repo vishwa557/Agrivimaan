@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const PilotService = require("../models/pilotModel");
+const PilotService = require("../services/pilotService");
+const { registerValidation, loginValidation } = require('../utils/validation');
+
 const verifyToken = require("../middleware/verifyToken");
 
 // Pilot Routes
@@ -30,16 +32,41 @@ router.get("/pilots/:pilotId", async (req, res) => {
   }
 });
 
-router.post("/pilots", verifyToken, async (req, res) => {
+router.post("/register", async (req, res) => {
+  // const { error } = registerValidation.validate(req.body);
+  // if (error) {
+  //   return res.status(400).json({ error: error.details[0].message });
+  // }
   const newPilot = req.body;
+  // console.log(newPilot)
   try {
-    const result = await PilotService.createPilot(newPilot);
+    
+    
+    const result = await PilotService.createPilot(newPilot);;
     res.status(201).json({ message: 'Pilot created successfully', result });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to create a new pilot' });
   }
 });
+
+router.post('/login', async (req, res) => {
+  console.log(req.body)
+  // const { error } = loginValidation.validate(req.body);
+  // if (error) {
+  //   return res.status(400).json({ error: error.details[0].message });
+  // }
+  try {
+    const { phone_number, Password } = req.body;
+ 
+    const result = await PilotService.loginUser(phone_number, Password);
+    res.status(200).json({ message: 'Login successful', token: result.token });
+  } catch (error) {
+    res.status(401).json({ error: error.message });
+  }
+});
+
+
 
 router.put("/pilots/:pilotId", async (req, res) => {
   const pilotId = req.params.pilotId;

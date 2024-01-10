@@ -7,6 +7,7 @@ const { registerValidation, loginValidation } = require('../utils/validation');
 const verifyToken = require('../middleware/verifyToken')
 
 router.post('/register', async (req, res) => {
+  console.log(userService)
   const { error } = registerValidation.validate(req.body);
   if (error) {
     return res.status(400).json({ error: error.details[0].message });

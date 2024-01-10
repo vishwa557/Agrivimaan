@@ -50,6 +50,23 @@ class Pilot {
     });
   }
 
+  static getPilotByPhoneNumber(phone_number) {
+    // console.log(phone_number)
+    return new Promise((resolve, reject) => {
+      db.query(
+        "SELECT * FROM Pilots WHERE phone_number = ?",
+        [phone_number],
+        (err, results) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(results[0]);
+          }
+        }
+      );
+    });
+  }
+
   static updatePilot(pilotId, updatedPilot) {
     return new Promise((resolve, reject) => {
       const query = 'UPDATE Pilots SET ? WHERE pilot_id = ?';

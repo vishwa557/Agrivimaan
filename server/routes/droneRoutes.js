@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const DroneService = require("../models/droneModel");
+const DroneService = require("../services/droneService");
 const verifyToken = require("../middleware/verifyToken");
 
 router.get("/", async (req, res) => {

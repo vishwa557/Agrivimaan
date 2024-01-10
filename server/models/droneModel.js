@@ -38,6 +38,22 @@ class DroneInventory {
       });
   }
 
+   static getUserByPhoneNumber(phone_number) {
+    return new Promise((resolve, reject) => {
+      db.query(
+        "SELECT * FROM users WHERE phone_number = ?",
+        [phone_number],
+        (err, results) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(results[0]);
+          }
+        }
+      );
+    });
+  }
+
   static createDrone(newDrone) {
     return new Promise((resolve, reject) => {
         const query = 'INSERT INTO DroneInventory SET ?';
