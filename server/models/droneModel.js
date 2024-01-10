@@ -82,7 +82,7 @@ class DroneInventory {
           if (err) {
             reject(err);
           } else {
-           console.log("table created successfully")
+           console.log("Drone table created successfully")
             resolve(result);
           }
         });
