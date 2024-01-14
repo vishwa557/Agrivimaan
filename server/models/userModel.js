@@ -2,7 +2,7 @@ const db = require('../config/db');
 
 class User {
   constructor(user) {
-    this.id = user.id;
+    this.UserID = user.id;
     this.Name = user.Name;
     this.phone_number = user.phone_number;
     this.Password = user.Password;
@@ -45,7 +45,7 @@ class User {
     return new Promise((resolve, reject) => {
         const createTableQuery = `
         CREATE TABLE IF NOT EXISTS users (
-          id INT AUTO_INCREMENT PRIMARY KEY,
+          UserID INT AUTO_INCREMENT PRIMARY KEY,
           Name VARCHAR(255) NOT NULL,
           phone_number VARCHAR(20) NOT NULL,
           Password VARCHAR(255) NOT NULL,

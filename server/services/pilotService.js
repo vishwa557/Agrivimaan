@@ -44,7 +44,7 @@ const createPilot = async (userData) => {
   }
 };
 
-const loginUser = async (phone_number, password) => {
+const loginUser = async (phone_number,password) => {
   try {
     const user = await Pilot.getPilotByPhoneNumber(phone_number);
     console.log(user, password)

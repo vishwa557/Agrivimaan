@@ -3,9 +3,9 @@ const db = require('../config/db');
 class Admin {
   constructor(admin) {
     this.admin_id = admin.admin_id;
-    this.user_name = admin.user_name;
     this.name = admin.name;
     this.email = admin.email;
+    this.password = admin.password;
     this.phone_number = admin.phone_number;
   }
 
@@ -47,6 +47,40 @@ class Admin {
       });
     });
   }
+  
+  static getAdminByPhoneNumber(phone_number) {
+    // console.log(phone_number)
+    return new Promise((resolve, reject) => {
+      db.query(
+        "SELECT * FROM Admins WHERE phone_number = ?",
+        [phone_number],
+        (err, results) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(results[0]);
+          }
+        }
+      );
+    });
+  }
+
+  static getAdminByEmail(email) {
+    // console.log(email)
+    return new Promise((resolve, reject) => {
+      db.query(
+        "SELECT * FROM Admins WHERE email = ?",
+        [email],
+        (err, results) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(results[0]);
+          }
+        }
+      );
+    });
+  }
 
   static updateAdmin(adminId, updatedAdmin) {
     return new Promise((resolve, reject) => {
@@ -66,9 +100,9 @@ class Admin {
       const createTableQuery = `
         CREATE TABLE IF NOT EXISTS Admins (
           admin_id INT AUTO_INCREMENT PRIMARY KEY,
-          user_name VARCHAR(50) NOT NULL,
           name VARCHAR(255) NOT NULL,
           email VARCHAR(100) NOT NULL,
+          password VARCHAR(100) NOT NULL,
           phone_number VARCHAR(20) NOT NULL UNIQUE
         )
       `;

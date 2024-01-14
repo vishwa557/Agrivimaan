@@ -1,7 +1,23 @@
 const express = require("express");
 const router = express.Router();
-const AdminService = require("../models/adminModel");
+const AdminService = require("../services/adminService");
 const verifyToken = require("../middleware/verifyToken");
+
+router.post('/login', async (req, res) => {
+  console.log(req.body)
+  // const { error } = loginValidation.validate(req.body);
+  // if (error) {
+  //   return res.status(400).json({ error: error.details[0].message });
+  // }
+  try {
+    const { email, password } = req.body;
+  console.log(email)
+    const result = await AdminService.loginAdmin(email, password);
+    res.status(200).json({ message: 'Login successful', token: result.token });
+  } catch (error) {
+    res.status(401).json({ error: error.message });
+  }
+});
 
 router.get("/admins", async (req, res) => {
     try {
@@ -28,7 +44,7 @@ router.get("/admins", async (req, res) => {
     }
   });
   
-  router.post("/admins", verifyToken, async (req, res) => {
+  router.post("/register", async (req, res) => {
     const newAdmin = req.body;
     try {
       const result = await AdminService.createAdmin(newAdmin);
