@@ -1,27 +1,32 @@
 const express = require('express');
 const app = express();
+const cors = require('cors')
 const config = require('./config/config')
-const userRoutes = require('./routes/userRoutes');
-const droneRoutes = require('./routes/droneRoutes');
-const adminRoutes = require('./routes/adminRoutes');
-const pilotRoutes = require('./routes/pilotRoutes');
-const searchRoutes = require('./routes/searchRoutes');
-const repairForms = require('./routes/repairing_formRoutes')
-const sprayingForms = require('./routes/spraying_formRoutes')
-const orders = require('./routes/orderRoutes')
-const shoppingCart = require('./routes/cartRoutes')
-const User = require('./models/userModel')
-const DroneInventory = require('./models/droneModel');
-const Pilot = require('./models/pilotModel');
-const Admin = require('./models/adminModel');
-const Repair_Details = require('./models/repairing_formModel')
-const Spraying_Details = require('./models/spraying_formModel');
-const Order = require('./models/ordersModel');
-const ShoppingCart = require('./models/cartModel');
-
+const userRoutes = require('./routes/users/userRoutes');
+const droneRoutes = require('./routes/admin/droneRoutes');
+const adminRoutes = require('./routes/admin/adminRoutes');
+const pilotRoutes = require('./routes/pilots/pilotRoutes');
+const searchRoutes = require('./routes/users/searchRoutes');
+const repairForms = require('./routes/services/repairing_formRoutes');
+const sprayingForms = require('./routes/services/spraying_formRoutes');
+const orders = require('./routes/users/orderRoutes');
+const shoppingCart = require('./routes/users/cartRoutes');
+const feedbackForm = require('./routes/users/feedbackFormRoutes');
+const address = require('./routes/services/addressRoutes');
+const payments = require('./routes/users/paymentRoutes')
+const User = require('./models/users/userModel')
+const DroneInventory = require('./models/admin/droneModel');
+const Pilot = require('./models/pilots/pilotModel');
+const Admin = require('./models/admin/adminModel');
+const Repair_Details = require('./models/services/repairing_formModel')
+const Spraying_Details = require('./models/services/spraying_formModel');
+const Order = require('./models/users/ordersModel');
+const ShoppingCart = require('./models/users/cartModel');
+const FeedbackForm = require('./models/users/feedbackFormModel');
+const Address = require('./models/services/addressModel');
 // Middleware to parse JSON data
 app.use(express.json());
-
+app.use(cors())
 
 User.createTable()
 DroneInventory.createTable()
@@ -31,6 +36,8 @@ Repair_Details.createTable()
 Spraying_Details.createTable()
 Order.createOrdersTable()
 ShoppingCart.createShoppingCartTable()
+FeedbackForm.createFeedbackFormTable()
+Address.createAddressesTable()
 
 // Routes
 app.use('/users', userRoutes);
@@ -42,6 +49,9 @@ app.use('/repair_form', repairForms)
 app.use('/spraying_form', sprayingForms)
 app.use('/order', orders)
 app.use('/cart', shoppingCart)
+app.use('/feebackForm', feedbackForm)
+app.use('/address', address)
+app.use('/payments', payments)
 // Start the server
 const PORT = config.PORT;
 app.listen(PORT, () => {
