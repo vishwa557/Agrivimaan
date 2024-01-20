@@ -1,47 +1,168 @@
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMapMarkerAlt, faSearch } from "@fortawesome/free-solid-svg-icons";
-import Image from "../agrivimaan1.png";
+import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { AppBar, Toolbar, IconButton, Typography, InputBase, Button, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 
-function NavBar() {
-  const logoStyles = {
-    width: '4rem',
-    marginLeft: '2rem',
-    borderRadius: '0.5rem',
+const Navbar = () => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [location, setLocation] = useState('');
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState('');
+
+  const YOUR_LOCATIONIQ_API_KEY = 'pk.6bb9a4c4497fbbd9cd8acb299226a0d5'
+
+  const handleLocationClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleLocationClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLocationChange = (newLocation) => {
+    setLocation(newLocation);
+    handleLocationClose();
+  };
+
+  const handleGetCurrentLocation = async () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          try {
+            const response = await fetch(
+              `https://us1.locationiq.com/v1/reverse.php?key=${YOUR_LOCATIONIQ_API_KEY}&lat=${latitude}&lon=${longitude}&format=json`
+            );
+            const data = await response.json();
+            const city = data.address.city || data.address.town || data.address.village || '';
+            const state = data.address.state || '';
+            setCurrentLocation(`${city}, ${state}`);
+          } catch (error) {
+            console.error('Error fetching location from coordinates', error);
+          }
+        },
+        (error) => {
+          console.error('Error getting user location', error);
+        }
+      );
+    } else {
+      console.error('Geolocation is not supported by this browser.');
+    }
+  };
+
+  const handleLocationSubmit = async () => {
+    try {
+      const response = await fetch(
+        `https://us1.locationiq.com/v1/search.php?key=${YOUR_LOCATIONIQ_API_KEY}&q=${encodeURIComponent(location)}&format=json`
+      );
+      const data = await response.json();
+      if (data.length > 0) {
+        const { lat, lon } = data[0];
+        console.log('Coordinates:', { lat, lon });
+      }
+    } catch (error) {
+      console.error('Error fetching coordinates from address', error);
+    }
+  };
+
+  const handleDialogOpen = () => {
+    setDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
   };
 
   return (
-    <>
-      <div className="flex border place-items-center justify-between space-x-3 py-4">
-        <div className="flex gap ml-5 font-italic font-bold w-14 ">
-          <img src={Image} width="100px" height="auto"  />
+    <AppBar position="static">
+      <Toolbar className="bg-green-300 justify-between mx-15">
+      <div className="flex items-center">
+  <Typography variant="h4" component="div" fontWeight="bold" fontStyle='Bold 700' >
+    Agrivimaan
+  </Typography>
+</div>
+
+
+        {/* Location Selector */}
+        <div className='ml-64'>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="location"
+            onClick={handleLocationClick}
+          >
+            <LocationOnIcon />
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleLocationClose}
+          >
+            <MenuItem onClick={handleDialogOpen}>Use Current Location</MenuItem>
+            <MenuItem onClick={() => handleLocationChange('Location 1')}>New Dehli</MenuItem>
+            <MenuItem onClick={() => handleLocationChange('Location 2')}>Karnataka</MenuItem>
+            <MenuItem onClick={() => handleLocationChange('Location 3')}>West Bengal</MenuItem>
+            
+          </Menu>
         </div>
-        <div className="location">
-          <FontAwesomeIcon icon={faMapMarkerAlt} className="ml-2 text-green-500" />
-          <select className="py-5 px-10 pt-4 pb-4 ml-2 border w-[25rem]">
-            <option>Dadar, Mumbai</option>
-          </select>
+
+          
+          {currentLocation && (
+          <Typography variant="body2" color="inherit">
+            {currentLocation}
+          </Typography>
+        )}
+
+        {/* Search Bar */}
+        <div className="ml-auto">
+          <div className="flex items-center bg-white p-2 rounded-full">
+            <SearchIcon className="text-gray-500" />
+            <InputBase
+              placeholder="Search…"
+              inputProps={{ 'aria-label': 'search' }}
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              className="ml-2 w-140"
+            />
+            <Button color="inherit" onClick={handleLocationSubmit}>
+              Search
+            </Button>
+          </div>
         </div>
-        <div className="services">
-          <FontAwesomeIcon icon={faSearch} className="ml-2 text-gray-500" />
-          <select className="py-5 px-10 pt-4 pb-4 ml-2 border w-[25rem]">
-            <option>Drone Types</option>
-            <option>Drone spraying services</option>
-            <option>Drone repair services</option>
-            <option>Drone Operating services</option>
-          </select>
-        </div>
-        <div className="Login ml-auto">
-          <a href="#" className="py-5 px-10 pt-4 pb-4 mr-3 border">
+
+      
+
+        {/* Login and Signup Buttons */}
+        <div className="flex items-center">
+          <Button color="inherit" className="ml-2">
             Login
-          </a>
+          </Button>
+          <Button color="inherit" className="ml-2">
+            Signup
+          </Button>
         </div>
-      </div>
-    </>
+
+        {/* Dialog for Current Location */}
+        <Dialog open={dialogOpen} onClose={handleDialogClose}>
+          <DialogTitle>Use Current Location</DialogTitle>
+          <DialogContent>
+            <Typography>Do you want to use your current location?</Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleDialogClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={() => { handleGetCurrentLocation(); handleDialogClose(); }} color="primary">
+              Yes
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Toolbar>
+    </AppBar>
   );
-}
+};
 
-export default NavBar;  
-
-
-
+export default Navbar;
