@@ -28,6 +28,7 @@ router.post('/login', async (req, res) => {
   if (error) {
     return res.status(400).json({ error: error.details[0].message });
   }
+  console.log(req.body)
   try {
     const { phone_number, Password } = req.body;
  

@@ -172,6 +172,7 @@ import { AppBar, Toolbar, IconButton, Typography, InputBase, Button, Menu, MenuI
 import SearchIcon from '@mui/icons-material/Search';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Login from './LoginPopup';
+import Logo from '../agrivimaan.png';
 
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -258,15 +259,15 @@ const Navbar = () => {
 
   return (
     <AppBar position="static">
-      <Toolbar className="bg-green-300 justify-between mx-15">
-        <div className="flex items-center">
-          <Typography variant="h4" component="div" fontWeight="bold" fontStyle="Bold 700">
-            Agrivimaan
-          </Typography>
-        </div>
+      <Toolbar className="bg-green-300 h-20 justify-between">
+      <div className ="flex items-center">
+      {/* Logo */}
+      <img src={Logo} alt="Logo" style={{ width: 'auto', height: '40px', marginLeft: '10px'}} />
+
+    </div>
 
         {/* Location Selector */}
-        <div className='ml-64'>
+        <div className='ml-10'>
           <IconButton
             size="large"
             edge="start"
@@ -295,7 +296,7 @@ const Navbar = () => {
         )}
 
         {/* Search Bar */}
-        <div className="ml-auto">
+        <div className="ml-10px">
           <div className="flex items-center bg-white p-2 rounded-full">
             <SearchIcon className="text-gray-500" />
             <InputBase

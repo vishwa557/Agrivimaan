@@ -13,23 +13,23 @@ const MyCarousel = () => {
   const settings = {
     dots: true,
     infinite: true,
-    speed: 300,
+    speed: 1000,
     slidesToShow: 1,
     slidesToScroll: 1,
     centerMode: true,
     autoplay: true,
-    autoplaySpeed: 50, 
+    autoplaySpeed: 1500, 
   };
 
   return (
     <Slider {...settings}>
       {images.map((imageUrl, index) => (
         <div key={index}>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin:'10px' }}>
             <img
               src={imageUrl}
               alt={`Image ${index + 1}`}
-              style={{ width: '60%', height: 'auto' }}
+              style={{ width: '60%', height: '50%' }}
             />
           </div>
         </div>
@@ -39,3 +39,44 @@ const MyCarousel = () => {
 };
 
 export default MyCarousel;
+
+// import React from 'react';
+// import Carousel from 'react-material-ui-carousel'
+// import { Paper, Button } from '@mui/material'
+
+// function MyCarousel(props)
+// {
+//     var items = [
+//         {
+//             name: "Random Name #1",
+//             description: "Probably the most random thing you have ever seen!"
+//         },
+//         {
+//             name: "Random Name #2",
+//             description: "Hello World!"
+//         }
+//     ]
+
+//     return (
+//         <Carousel>
+//             {
+//                 items.map( (item, i) => <Item key={i} item={item} /> )
+//             }
+//         </Carousel>
+//     )
+// }
+
+// function Item(props)
+// {
+//     return (
+//         <Paper>
+//             <h2>{props.item.name}</h2>
+//             <p>{props.item.description}</p>
+
+//             <Button className="CheckButton">
+//                 Check it out!
+//             </Button>
+//         </Paper>
+//     )
+// }
+//  export default MyCarousel;

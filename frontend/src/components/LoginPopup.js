@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios'
 import { Dialog, DialogTitle, DialogContent,Typography, DialogActions, TextField, Button } from '@mui/material';
 const apiUrl = "http://localhost/8000/users";
 
@@ -8,30 +9,29 @@ const Login = ({ open, onClose }) => {
 
   const handleLoginSubmit = async () => {
     try {
-      // Replace 'your-api-endpoint' with the actual login API endpoint
-      const response = await fetch(`${apiUrl}/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          phoneNumber,
-          password,
-        }),
+      console.log('HI')
+      const response = await axios.post(`${apiUrl}/login`, {
+        phoneNumber,
+        password,
       });
-
-      if (response.ok) {
-        const data = await response.json();
+  
+      if (response.status === 200) {
+        const data = response.data;
+        console.log(data);
+  
+        // Now you can handle the data, for example, storing the access token in local storage
         const accessToken = data.accessToken;
         localStorage.setItem('accessToken', accessToken);
-
-        onClose();
+      
+       
       } else {
-        console.error('Authentication failed');
+        // Handle non-successful response (e.g., display an error message)
+        console.error('Login failed');
       }
     } catch (error) {
-      console.error('Error during login:', error);
-    }
+      // Handle network errors or other issues
+      console.error('Error during login:', error);
+    }
   };
 
   return (
