@@ -1,82 +1,85 @@
-import React from 'react';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+// Carousel.js
 
-const images = [
-  'https://www.agrifarming.in/wp-content/uploads/2022/09/Importance-of-Drones5-1024x683.jpg',
-  'https://semantictech.in/blogs/wp-content/uploads/2023/06/History-of-drone-in-agriculture.png',
-  'https://st3.depositphotos.com/3258807/13219/i/450/depositphotos_132193318-stock-photo-handsome-man-repairing-drone-with.jpg',
-];
+import React, { useState, useEffect } from 'react';
 
-const MyCarousel = () => {
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 1000,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    centerMode: true,
-    autoplay: true,
-    autoplaySpeed: 1500, 
+const Carousel = ({ images }) => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prevSlide) => (prevSlide + 1) % images.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [images]);
+
+  const handlePrevSlide = () => {
+    setCurrentSlide((prevSlide) => (prevSlide - 1 + images.length) % images.length);
+  };
+
+  const handleNextSlide = () => {
+    setCurrentSlide((prevSlide) => (prevSlide + 1) % images.length);
+  };
+
+  const handleSlideIndicatorClick = (index) => {
+    setCurrentSlide(index);
   };
 
   return (
-    <Slider {...settings}>
-      {images.map((imageUrl, index) => (
-        <div key={index}>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin:'10px' }}>
+    <div id="default-carousel" className="relative w-full" data-carousel="slide">
+      {/* Carousel wrapper */}
+      <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
+        {images.map((image, index) => (
+          <div
+            key={index}
+            className={`${
+              index === currentSlide ? 'duration-700 ease-in-out' : 'hidden'
+            }`}
+            data-carousel-item
+          >
             <img
-              src={imageUrl}
-              alt={`Image ${index + 1}`}
-              style={{ width: '60%', height: '50%' }}
+              src={image}
+              className=" block w-23 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+              alt={`Slide ${index + 1}`}
             />
           </div>
-        </div>
-      ))}
-    </Slider>
+        ))}
+      </div>
+      {/* Slider indicators */}
+      <div className="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
+        {images.map((_, index) => (
+          <button
+            key={index}
+            type="button"
+            className={`w-3 h-3 rounded-full ${
+              index === currentSlide ? 'bg-white' : 'bg-gray-300'
+            }`}
+            aria-current={index === currentSlide}
+            aria-label={`Slide ${index + 1}`}
+            data-carousel-slide-to={index}
+            onClick={() => handleSlideIndicatorClick(index)}
+          ></button>
+        ))}
+      </div>
+      {/* Slider controls */}
+      <button
+        type="button"
+        className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+        data-carousel-prev
+        onClick={handlePrevSlide}
+      >
+        {/* ... Previous button content */}
+      </button>
+      <button
+        type="button"
+        className="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+        data-carousel-next
+        onClick={handleNextSlide}
+      >
+        {/* ... Next button content */}
+      </button>
+    </div>
   );
 };
 
-export default MyCarousel;
-
-// import React from 'react';
-// import Carousel from 'react-material-ui-carousel'
-// import { Paper, Button } from '@mui/material'
-
-// function MyCarousel(props)
-// {
-//     var items = [
-//         {
-//             name: "Random Name #1",
-//             description: "Probably the most random thing you have ever seen!"
-//         },
-//         {
-//             name: "Random Name #2",
-//             description: "Hello World!"
-//         }
-//     ]
-
-//     return (
-//         <Carousel>
-//             {
-//                 items.map( (item, i) => <Item key={i} item={item} /> )
-//             }
-//         </Carousel>
-//     )
-// }
-
-// function Item(props)
-// {
-//     return (
-//         <Paper>
-//             <h2>{props.item.name}</h2>
-//             <p>{props.item.description}</p>
-
-//             <Button className="CheckButton">
-//                 Check it out!
-//             </Button>
-//         </Paper>
-//     )
-// }
-//  export default MyCarousel;
+export default Carousel;

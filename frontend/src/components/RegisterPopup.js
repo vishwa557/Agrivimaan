@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Typography, Button } from '@mui/material';
+import Transition from './Animations/Transitions';
 
-const Register = ({ open, onClose }) => {
+const Register = () => {
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [address, setAddress] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [open, setOpen] = useState(true);
+
+  const navigate = useNavigate();
 
   const handleRegisterSubmit = async () => {
     try {
@@ -22,6 +28,13 @@ const Register = ({ open, onClose }) => {
       if (response.status === 201) {
         // Handle successful registration, e.g., show a success message
         console.log('Registration successful');
+        setSuccessMessage('User registered successfully');
+        setTimeout(() => {
+          // Reset success message and close the registration dialog after some time (e.g., 3 seconds)
+          setSuccessMessage('');
+          // Close the registration dialog
+          navigate('/login'); // Navigate to the login page
+        }, 3000);
       } else {
         // Handle non-successful response (e.g., display an error message)
         console.error('Registration failed');
@@ -32,8 +45,20 @@ const Register = ({ open, onClose }) => {
     }
   };
 
+  const handleRegisterClose= (event) => {
+    setOpen(false);
+    navigate('/')
+  }
+
+  const handleLoginRedirect = () => {
+    // You can use the navigate function to redirect to the registration page
+    navigate('/login');
+  };
+
   return (
-    <Dialog open={open} onClose={onClose}>
+
+    <Dialog open={open} TransitionComponent={Transition}>
+      
       <DialogTitle>
         <Typography variant="h5" color="primary">
           Welcome to Agrivimaan
@@ -91,9 +116,24 @@ const Register = ({ open, onClose }) => {
             </div>
           </div>
         </section>
+                {/* Display success message */}
+                {successMessage && (
+          <Typography variant="body2" color="success" gutterBottom>
+            {successMessage}
+          </Typography>
+        )}
+ <div className="mt-4 font-semibold text-sm text-slate-500 text-center md:text-left">
+          Already have an account?{' '}
+          <button
+            className="text-red-600 hover:underline hover:underline-offset-4"
+            onClick={handleLoginRedirect}
+          >
+            Login
+          </button>
+        </div>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="primary">
+        <Button onClick={()=>{handleRegisterClose()}} color="primary">
           Cancel
         </Button>
       </DialogActions>

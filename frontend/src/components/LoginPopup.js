@@ -1,10 +1,17 @@
+// Login.js
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Typography, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import Transition from './Animations/Transitions';
 
-const Login = ({ open, onClose }) => {
+
+const Login = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
+  const [open, setOpen] = useState(true);
+  const navigate = useNavigate();
 
   const handleLoginSubmit = async () => {
     try {
@@ -18,29 +25,38 @@ const Login = ({ open, onClose }) => {
         const data = response.data;
         console.log(data);
 
-        // Now you can handle the data, for example, storing the access token in local storage
         const accessToken = data.accessToken;
         localStorage.setItem('accessToken', accessToken);
+
+        navigate('/');
       } else {
-        // Handle non-successful response (e.g., display an error message)
         console.error('Login failed');
       }
     } catch (error) {
-      // Handle network errors or other issues
       console.error('Error during login:', error);
     }
   };
 
+  const handleLoginClose =() => {
+    setOpen(false);
+    navigate('/');
+  }
+
+  const handleRegisterRedirect = () => {
+    // You can use the navigate function to redirect to the registration page
+    navigate('/register');
+  };
+
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} TransitionComponent={Transition}>
       <DialogTitle>
-        <Typography variant="h5" color="primary">
+        <Typography variant="h5" color="primary" className='text-black'>
           Welcome Back!
         </Typography>
         Login
       </DialogTitle>
       <DialogContent>
-        <section className=" flex flex-col md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center my-2 mx-5 md:mx-0 md:my-0">
+        <section className="flex flex-col md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center my-2 mx-5 md:mx-0 md:my-0">
           <div className="md:w-1/3 max-w-sm">
             <img
               src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
@@ -48,7 +64,6 @@ const Login = ({ open, onClose }) => {
             />
           </div>
           <div className=" ">
-            
             <input
               className="text-sm w-full px-4 py-2 border border-solid border-gray-300 rounded"
               type="text"
@@ -69,7 +84,7 @@ const Login = ({ open, onClose }) => {
                 <span>Remember Me</span>
               </label>
               <a
-                className="text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-4"
+                className="text-black hover:text-blue-700 hover:underline hover:underline-offset-4"
                 href="#"
               >
                 Forgot Password?
@@ -77,31 +92,37 @@ const Login = ({ open, onClose }) => {
             </div>
             <div className="text-center md:text-left">
               <button
-                className="mt-4 bg-blue-600 hover:bg-blue-700 px-4 py-2 text-white uppercase rounded text-xs tracking-wider"
+                className="bg-blue-600 hover:bg-blue-700 px-4 py-2 text-white uppercase rounded text-xs tracking-wider"
                 type="submit"
                 onClick={handleLoginSubmit}
               >
                 Login
               </button>
             </div>
-            <div className="mt-4 font-semibold text-sm text-slate-500 text-center md:text-left">
-              Don't have an account?{' '}
-              <a
-                className="text-red-600 hover:underline hover:underline-offset-4"
-                href="#"
-              >
-                Register
-              </a>
-            </div>
           </div>
+          
         </section>
+        <div className="mt-4 font-semibold text-sm text-slate-500 text-center md:text-left">
+          Don't have an account?{' '}
+          <button
+            className="text-red-600 hover:underline hover:underline-offset-4"
+            onClick={handleRegisterRedirect}
+          >
+            Register
+          </button>
+        </div>
+
       </DialogContent>
+      
       <DialogActions>
-        <Button onClick={onClose} color="primary">
+        
+        <Button onClick={() => handleLoginClose()} color="inherit">
           Cancel
         </Button>
+        
       </DialogActions>
     </Dialog>
+    
   );
 };
 

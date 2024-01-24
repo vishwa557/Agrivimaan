@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { ThemeProvider } from '@mui/material/styles';
 import Navbar from './components/Navbar';
-import MyCarousel from './components/Carousel';
 import LoginPopup from './components/LoginPopup';
-import RegisterPopup from './components/RegisterPopup'; // Assuming you have a RegisterPopup component
+import RegisterPopup from './components/RegisterPopup';
 import Landing_page from './components/Landing_page';
+import theme from './components/Animations/CustomTheme';
 
 function App() {
   const [loginOpen, setLoginOpen] = useState(false);
@@ -14,27 +15,21 @@ function App() {
     setLoginOpen(true);
   };
 
-  const handleLoginClose = () => {
-    setLoginOpen(false);
-  };
-
   const handleRegisterOpen = () => {
     setRegisterOpen(true);
-  };
-
-  const handleRegisterClose = () => {
-    setRegisterOpen(false);
   };
 
   return (
     <Router>
       <div>
         <Navbar onLoginOpen={handleLoginOpen} onRegisterOpen={handleRegisterOpen} />
-        <MyCarousel />
-        <Landing_page />
-
-        <LoginPopup open={loginOpen} onClose={handleLoginClose} />
-        <RegisterPopup open={registerOpen} onClose={handleRegisterClose} />
+      
+        <Routes>
+          <Route path="/" element={<Landing_page />} />
+          <Route path="/login" element={<LoginPopup />} />
+          <Route path="/register" element={<RegisterPopup  />} />
+        </Routes>
+      
       </div>
     </Router>
   );
