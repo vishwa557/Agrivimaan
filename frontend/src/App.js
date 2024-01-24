@@ -1,13 +1,15 @@
 
 import MyCarousel from './components/Carousel';
-import NavBar from './components/Navbar';
+import LandingPage from './components/Langing_page';
+import Navbar from './components/Navbar';
 
 
 function App() {
   return (
    <div>
-    <NavBar/>
+    <Navbar/>
     <MyCarousel/>
+    <LandingPage/>
    </div>
   );
 }
