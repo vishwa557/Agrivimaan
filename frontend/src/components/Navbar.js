@@ -61,6 +61,7 @@ const Navbar = () => {
               "";
             const state = data.address.state || "";
             setCurrentLocation(`${city}, ${state}`);
+            setDialogOpen(false)
           } catch (error) {
             console.error("Error fetching location from coordinates", error);
           }
@@ -88,10 +89,8 @@ const Navbar = () => {
 
   return (
     <AppBar position="fixed">
-      <Toolbar
-        className="bg-white h-20 css-1dbjc4n r-bztko3 r-13qz1uu"
-        style={{ transitionDuration: "0s", WebkitTransitionDuration: "0s" }}
-      >
+      <Toolbar className="bg-green-300 h-20 " spacing="2px">
+        {/* Logo */}
         <div className="flex items-center">
           <img
             src={Logo}
@@ -120,9 +119,6 @@ const Navbar = () => {
                 </Typography>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleDialogClose} color="primary">
-                  Cancel
-                </Button>
                 <Button
                   onClick={() => {
                     handleGetCurrentLocation();
@@ -131,6 +127,9 @@ const Navbar = () => {
                   color="primary"
                 >
                   Yes
+                </Button>
+                <Button onClick={()=>{handleDialogClose ()} }color="primary">
+                  Cancel
                 </Button>
               </DialogActions>
             </Dialog>
