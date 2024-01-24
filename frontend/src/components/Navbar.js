@@ -89,7 +89,7 @@ const Navbar = () => {
 
   return (
     <AppBar position="fixed">
-      <Toolbar className="bg-green-300 h-20 " spacing="2px">
+      <Toolbar className="bg-white h-20 " spacing="2px">
         {/* Logo */}
         <div className="flex items-center">
           <img

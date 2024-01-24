@@ -30,7 +30,7 @@ function App() {
     <Router>
       <div>
         <Navbar onLoginOpen={handleLoginOpen} onRegisterOpen={handleRegisterOpen} />
-        <MyCarousel />
+        {/* <MyCarousel /> */}
         <Landing_page />
 
         <LoginPopup open={loginOpen} onClose={handleLoginClose} />
