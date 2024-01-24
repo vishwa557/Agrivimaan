@@ -3,7 +3,7 @@ import { Container, Grid, Paper, Typography } from '@mui/material';
 
 const LandingPage = () => {
   return (
-    <Container maxWidth="lg"  style={{ height: '100vh' , marginTop: '40px'}} >
+    <Container maxWidth="lg"  style={{ height: '100vh' , marginTop: '100px'}} >
       <Grid container spacing={3} style={{ height: '100%' }}>
         {/* Left Container (30%) */}
         <Grid item xs={12} sm={4}>
