@@ -14,6 +14,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  InputLabel,
+  FormControl
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -26,6 +28,7 @@ const Navbar = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [currentLocation, setCurrentLocation] = useState('');
   const [loginDialogOpen, setLoginDialogOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState('');
   const YOUR_LOCATIONIQ_API_KEY = 'pk.6bb9a4c4497fbbd9cd8acb299226a0d5';
 
   // Open the login dialog
@@ -102,6 +105,10 @@ const Navbar = () => {
     setDialogOpen(false);
   };
 
+  const handleServiceChange = (event) => {
+    setSelectedService(event.target.value);
+  };
+
   return (
     <AppBar position="fixed">
       <Toolbar className="bg-green-300 h-20 " spacing="2px">
@@ -109,7 +116,7 @@ const Navbar = () => {
         <div className="flex items-center">
           <img src={Logo} alt="Logo" style={{ width: 'auto', height: '40px', marginLeft: '10px' }} />
         </div>
-
+        <Box width={100} />
         {/* Search Location */}
         <div className="ml-4">
           <Box
@@ -117,48 +124,77 @@ const Navbar = () => {
             alignItems="center"
             borderRadius="md"
             border="1px solid #ccc"
-            padding="15px"
-            className="border border-gray-300 rounded px-2 py-1"
-            onClick={()=>{
+            padding="20px"
+            className="border border-gray-300 rounded px-3 py-2"
+            onClick={() => {
               handleDialogOpen()
             }}
             width={300}
           >
             <LocationOnIcon />
             {/* Pop-up for Current Location */}
-        <Dialog onClose={handleDialogClose}>
-          <DialogTitle>Use Current Location</DialogTitle>
-          <DialogContent>
-            <Typography>Do you want to use your current location?</Typography>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleDialogClose} color="primary">
-              Cancel
-            </Button>
-            <Button
-              onClick={() => {
-                handleGetCurrentLocation();
-                handleDialogClose();
-              }}
-              color="primary"
-            >
-              Yes
-            </Button>
-          </DialogActions>
-        </Dialog>
+            <Dialog open={dialogOpen} onClose={handleDialogClose}>
+              <DialogTitle>Use Current Location</DialogTitle>
+              <DialogContent>
+                <Typography>Do you want to use your current location?</Typography>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleDialogClose} color="primary">
+                  Cancel
+                </Button>
+                <Button
+                  onClick={() => {
+                    handleGetCurrentLocation();
+                    handleDialogClose();
+                  }}
+                  color="primary"
+                >
+                  Yes
+                </Button>
+              </DialogActions>
+            </Dialog>
             <Typography variant="body2" color="textSecondary" ml={1}>
               {currentLocation || 'Default Location'}
             </Typography>
           </Box>
         </div>
-
+        <Box width={50}/>
         {/* Select Element */}
         <div className="ml-4">
-          <Select variant="outlined" className="border border-gray-300 rounded px-2 py-1">
-            <option value="drone-services" selected>
-              Drone Services
-            </option>
-          </Select>
+          <FormControl variant="outlined" style={{ width: '300px' }}>
+            <InputLabel htmlFor="drone-services-select">Drone Services</InputLabel>
+            <Select
+              label="Drone Services"
+              value={selectedService}
+              onChange={handleServiceChange}
+              className="border border-gray-300 rounded px-2 py-1"
+              inputProps={{
+                name: 'drone-services',
+                id: 'drone-services-select',
+              }}
+              MenuProps={{
+                anchorOrigin: {
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                },
+                transformOrigin: {
+                  vertical: 'top',
+                  horizontal: 'center',
+                },
+                getContentAnchorEl: null,
+              }}
+            >
+              <MenuItem value="" disabled>
+                Select Drone Service
+              </MenuItem>
+              <MenuItem value="drone-spraying-services">
+                <div style={{ display: 'flex', justifyContent: 'center' }}>Drone Spraying services</div>
+              </MenuItem>
+              <MenuItem value="drone-repairing-services">
+                <div style={{ display: 'flex', justifyContent: 'center' }}>Drone Repairing services</div>
+              </MenuItem>
+            </Select>
+          </FormControl>
         </div>
 
         {/* Space */}
@@ -173,29 +209,6 @@ const Navbar = () => {
             Signup
           </Button>
         </div>
-
-        {/* Pop-up for Current Location */}
-        <Dialog open={dialogOpen} onClose={handleDialogClose}>
-          <DialogTitle>Use Current Location</DialogTitle>
-          <DialogContent>
-            <Typography>Do you want to use your current location?</Typography>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleDialogClose} color="primary">
-              Cancel
-            </Button>
-            <Button
-              onClick={() => {
-                handleGetCurrentLocation();
-                handleDialogClose();
-              }}
-              color="primary"
-            >
-              Yes
-            </Button>
-          </DialogActions>
-        </Dialog>
-
         {/* Login Popup */}
         <Login open={loginDialogOpen} onClose={handleLoginClose} />
       </Toolbar>
@@ -369,5 +382,3 @@ export default Navbar;
 // };
 
 // export default Navbar;
-
-
