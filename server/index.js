@@ -28,6 +28,23 @@ const Address = require('./models/services/addressModel');
 app.use(express.json());
 app.use(cors())
 
+const allowedOrigins = ['http://localhost:3000']; // Add your React app's origin(s)
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, // Enable credentials (e.g., cookies, authorization headers)
+    optionsSuccessStatus: 200, // Some legacy browsers choke on 204
+  })
+);
+
 User.createTable()
 DroneInventory.createTable()
 Pilot.createTable()
