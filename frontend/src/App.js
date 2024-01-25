@@ -8,21 +8,12 @@ import Landing_page from './components/Landing_page';
 import theme from './components/Animations/CustomTheme';
 
 function App() {
-  const [loginOpen, setLoginOpen] = useState(false);
-  const [registerOpen, setRegisterOpen] = useState(false);
 
-  const handleLoginOpen = () => {
-    setLoginOpen(true);
-  };
-
-  const handleRegisterOpen = () => {
-    setRegisterOpen(true);
-  };
 
   return (
     <Router>
       <div>
-        <Navbar onLoginOpen={handleLoginOpen} onRegisterOpen={handleRegisterOpen} />
+        <Navbar/>
       
         <Routes>
           <Route path="/" element={<Landing_page />} />

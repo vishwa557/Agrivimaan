@@ -16,7 +16,7 @@ const Register = () => {
 
   const handleRegisterSubmit = async () => {
     try {
-     
+     console.log("HI")
       const response = await axios.post('http://localhost:8000/users/register', {
         Name: name,
         phone_number: phoneNumber,

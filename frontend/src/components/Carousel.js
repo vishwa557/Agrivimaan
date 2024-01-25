@@ -39,7 +39,7 @@ const Carousel = ({ images }) => {
           >
             <img
               src={image}
-              className=" block w-23 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+              className=" block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
               alt={`Slide ${index + 1}`}
             />
           </div>

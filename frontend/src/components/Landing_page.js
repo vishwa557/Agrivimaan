@@ -10,7 +10,7 @@ const LandingPage = () => {
       <Container maxWidth="lg" style={{ height: '100vh', marginTop: '100px', marginBottom: '100px' }}>
         <Grid container spacing={10} style={{ height: '70%' }}>
           {/* Left Container (30%) */}
-          <Grid item xs={1} sm={5} style={{ zIndex: 2 }}>
+          <Grid item xs={12} sm={5} style={{ zIndex: 2 }}>
             <Typography variant="h4">What services are you looking for?</Typography>
             <Paper elevation={1} style={{ height: '50%', padding: '20px', boxShadow: 'none' }}>
               {/* Displaying services as cards */}
@@ -47,8 +47,15 @@ const LandingPage = () => {
           </Grid>
         </Grid>
       </Container>
-      {/* <div style={{ marginTop: '20px' }} />
-      <Carousel images={carouselImages} /> */}
+
+      {/* Full-width Carousel */}
+      <Container maxWidth="lg" style={{ marginTop: '20px' }}>
+        <Grid container spacing={3} style={{ height: '100%' }}>
+          <Grid item xs={12}>
+            <Carousel images={carouselImages} />
+          </Grid>
+        </Grid>
+      </Container>
     </>
   );
 };

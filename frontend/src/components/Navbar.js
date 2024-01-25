@@ -190,8 +190,8 @@ const Navbar = () => {
               Signup
             </Button>
           </div>
-          <Login open={loginDialogOpen} onClose={() => setLoginDialogOpen(false)} />
-          <Register open={registerDialogOpen} onClose={() => setRegisterDialogOpen(false)} />
+          {/* <Login open={loginDialogOpen} onClose={() => setLoginDialogOpen(false)} />
+          <Register open={registerDialogOpen} onClose={() => setRegisterDialogOpen(false)} /> */}
           
         </Toolbar>
       </Paper>
