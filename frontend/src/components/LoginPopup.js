@@ -8,27 +8,29 @@ import Transition from './Animations/Transitions';
 
 
 const Login = () => {
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [password, setPassword] = useState('');
+  const [phone_number, setPhoneNumber] = useState('');
+  const [Password, setPassword] = useState('');
   const [open, setOpen] = useState(true);
   const navigate = useNavigate();
+  console.log(navigate)
 
   const handleLoginSubmit = async () => {
     try {
       const response = await axios.post('http://localhost:8000/users/login', {
-        phoneNumber,
-        password,
+        phone_number,
+        Password,
       });
 
-      console.log('Login response:', response.data);
+      console.log('Login response:', response);
       if (response.status === 200) {
         const data = response.data;
-        console.log(data);
+        console.log(data.token);
 
-        const accessToken = data.accessToken;
+        const accessToken = data.token;
         localStorage.setItem('accessToken', accessToken);
 
         navigate('/');
+        window.location.reload();
       } else {
         console.error('Login failed');
       }
@@ -68,14 +70,14 @@ const Login = () => {
               className="text-sm w-full px-4 py-2 border border-solid border-gray-300 rounded"
               type="text"
               placeholder="Phone Number"
-              value={phoneNumber}
+              value={phone_number}
               onChange={(e) => setPhoneNumber(e.target.value)}
             />
             <input
               className="text-sm w-full px-4 py-2 border border-solid border-gray-300 rounded mt-4"
               type="password"
               placeholder="Password"
-              value={password}
+              value={Password}
               onChange={(e) => setPassword(e.target.value)}
             />
             <div className="mt-4 flex justify-between font-semibold text-sm">
