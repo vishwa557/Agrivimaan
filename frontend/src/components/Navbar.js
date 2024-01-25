@@ -1,6 +1,4 @@
-// Navbar.js
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Paper,
@@ -19,17 +17,15 @@ import {
 } from "@mui/material";
 
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import Login from "./LoginPopup";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Logo from "../agrivimaan.png";
-import Register from "./RegisterPopup";
 import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [currentLocation, setCurrentLocation] = useState("");
-  const [loginDialogOpen, setLoginDialogOpen] = useState(false);
-  const [registerDialogOpen, setRegisterDialogOpen] = useState(false);
   const [selectedService, setSelectedService] = useState("");
+  const [token, setToken] = useState(localStorage.getItem('accessToken'));
   const YOUR_LOCATIONIQ_API_KEY = "pk.6bb9a4c4497fbbd9cd8acb299226a0d5";
   const navigate = useNavigate();
 
@@ -40,6 +36,12 @@ const Navbar = () => {
 
   const handleRegisterOpen = () => {
     navigate('/register');
+  };
+
+  const handleLogout = () => {
+    // Remove token from local storage and state
+    localStorage.removeItem('accessToken');
+    setToken(null);
   };
 
   const handleGetCurrentLocation = async () => {
@@ -183,16 +185,24 @@ const Navbar = () => {
           </div>
           <Box width={8} />
           <div className="flex items-center ml-auto">
-            <Button color="inherit" className="ml-2" onClick={handleLoginOpen}>
-              Login
-            </Button>
-            <Button color="inherit" className="ml-2" onClick={handleRegisterOpen}>
-              Signup
-            </Button>
+            {token ? (
+              <>
+                <AccountCircleIcon style={{ marginRight: '8px' , fontSize:'40px'}} />
+                <Button color="inherit" className="ml-2" onClick={handleLogout}>
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button color="inherit" className="ml-2" onClick={handleLoginOpen}>
+                  Login
+                </Button>
+                <Button color="inherit" className="ml-2" onClick={handleRegisterOpen}>
+                  Signup
+                </Button>
+              </>
+            )}
           </div>
-          <Login open={loginDialogOpen} onClose={() => setLoginDialogOpen(false)} />
-          <Register open={registerDialogOpen} onClose={() => setRegisterDialogOpen(false)} />
-          
         </Toolbar>
       </Paper>
     </AppBar>
