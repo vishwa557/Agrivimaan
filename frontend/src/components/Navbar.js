@@ -112,7 +112,13 @@ const Navbar = () => {
               width={300}
             >
               <LocationOnIcon style={{ color: 'black' }} />
-              <Dialog open={dialogOpen} onClose={handleDialogClose}>
+              
+
+              <Typography variant="body2" color="textSecondary" ml={1}>
+                {currentLocation || "Default Location"}
+              </Typography>
+            </Box>
+            <Dialog open={dialogOpen} onClose={handleDialogClose}>
                 <DialogTitle>Use Current Location</DialogTitle>
                 <DialogContent>
                   <Typography>
@@ -129,16 +135,11 @@ const Navbar = () => {
                   >
                     Yes
                   </Button>
-                  <Button onClick={()=>{handleDialogClose ()} }color="primary">
+                  <Button onClick={()=>{handleDialogClose()} }color="primary">
                     Cancel
                   </Button>
                 </DialogActions>
               </Dialog>
-
-              <Typography variant="body2" color="textSecondary" ml={1}>
-                {currentLocation || "Default Location"}
-              </Typography>
-            </Box>
           </div>
           <Box width={50} />
           <div className="ml-4">

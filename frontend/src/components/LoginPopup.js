@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Typography, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Transition from './Animations/Transitions';
 
 
@@ -85,12 +85,9 @@ const Login = () => {
                 <input className="mr-1" type="checkbox" />
                 <span>Remember Me</span>
               </label>
-              <a
-                className="text-black hover:text-blue-700 hover:underline hover:underline-offset-4"
-                href="#"
-              >
-                Forgot Password?
-              </a>
+              <p>
+                <Link to="/forgot-password">Forgot Password?</Link>
+              </p>
             </div>
             <div className="text-center md:text-left">
               <button

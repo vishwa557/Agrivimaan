@@ -6,6 +6,9 @@ import LoginPopup from './components/LoginPopup';
 import RegisterPopup from './components/RegisterPopup';
 import Landing_page from './components/Landing_page';
 import theme from './components/Animations/CustomTheme';
+import ServiceRequestForm from './components/ServiceRequestForm'
+import ForgotPassword from './components/ForgotPassword';
+import ResetPassword from './components/ResetPassword';
 
 function App() {
 
@@ -18,6 +21,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Landing_page />} />
           <Route path="/login" element={<LoginPopup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/service-1" element={<ServiceRequestForm />} />
           <Route path="/register" element={<RegisterPopup  />} />
         </Routes>
       

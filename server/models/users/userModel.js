@@ -62,7 +62,28 @@ class User {
         });
       });
   }
-
+  static updatePassword(phone_number, newPassword) {
+    return new Promise((resolve, reject) => {
+      // Assuming 'users' table structure has 'phone_number' as a unique identifier
+      db.query(
+        "UPDATE users SET Password = ? WHERE phone_number = ?",
+        [newPassword, phone_number],
+        (err, results) => {
+          if (err) {
+            console.error(err);
+            reject(err);
+          } else {
+            if (results.affectedRows === 0) {
+              reject({ message: "Phone number not found" });
+            } else {
+              resolve({ message: "Password updated successfully" });
+            }
+          }
+        }
+      );
+    });
+  }
+  
   static getAllUsers() {
     return new Promise((resolve, reject) => {
       db.query("SELECT * FROM users", (err, results) => {
@@ -75,6 +96,7 @@ class User {
     });
   }
 }
+
 
 module.exports = User;
 

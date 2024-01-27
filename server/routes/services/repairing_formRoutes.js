@@ -29,6 +29,7 @@ router.get("/:formId", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
+  console.log("HI")
   const newForm = req.body;
   try {
     const result = await RepairingFormsService.createRepairForms(newForm);
