@@ -17,9 +17,13 @@ const registerUser = async (userData) => {
       Name: userData.Name,
       phone_number: userData.phone_number,
       Password: hashedPassword,
-      address: userData.address
+      Country: userData.Country,
+      StreetAddress: userData.StreetAddress,
+      City: userData.City,
+      State: userData.State,
+      Zip: userData.Zip
     };
-// console.log(newUser);
+
     const createdUser = await User.createUser(newUser);
 
     return createdUser;
@@ -39,7 +43,7 @@ const loginUser = async (phone_number, password) => {
       throw new Error('Invalid phone number or password');
     }
     const token = jwt.sign({ phone_number: user.phone_number }, config.jwt_secret_key, {expiresIn: '1h'});
-    return { token };
+    return { user, token };
   } catch (error) {
     throw error;
   }
@@ -50,3 +54,4 @@ module.exports = {
   registerUser,
   loginUser,
 };
+

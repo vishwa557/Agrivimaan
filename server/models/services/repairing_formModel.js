@@ -2,13 +2,23 @@ const db = require('../../config/db');
 
 class Repair_Details {
   constructor(repair) {
-    this.repair_id = repair.repair_id;
-    this.pilot_id = repair.pilot_id;
-    this.drone_id = repair.drone_id;
-    this.issue_description = repair.issue_description;
-    this.repair_date = repair.repair_date;
-    this.repair_status = repair.repair_status;
-  }
+    this.repairId = repair.repairId;
+    this.pilotId = repair.pilotId;
+    this.droneId = repair.droneId;
+    this.userId = repair.userId;
+    this.userName = repair.userName;
+    this.phoneNumber = repair.phoneNumber;
+    this.Country = repair.Country;
+    this.StreetAddress = repair.StreetAddress;
+    this.City = repair.City;
+    this.State = repair.State;
+    this.Zip = repair.Zip;
+    this.issueDescription = repair.issueDescription;
+    this.repairDate = repair.repairDate;
+    this.repairStatus = repair.repairStatus;
+    this.repairCategory = repair.repairCategory;
+}
+
 
   static getAllRepairForms() {
     return new Promise((resolve, reject) => {
@@ -25,7 +35,7 @@ class Repair_Details {
 
   static getRepairFormsById(repairId) {
     return new Promise((resolve, reject) => {
-      const query = 'SELECT * FROM Repair_Details WHERE repair_id = ?';
+      const query = 'SELECT * FROM Repair_Details WHERE repairId = ?';
       db.query(query, [repairId], (err, result) => {
         if (err) {
           reject(err);
@@ -51,7 +61,7 @@ class Repair_Details {
 
   static updateRepairForms(repairId, updatedRepair) {
     return new Promise((resolve, reject) => {
-      const query = 'UPDATE Repair_Details SET ? WHERE repair_id = ?';
+      const query = 'UPDATE Repair_Details SET ? WHERE repairId = ?';
       db.query(query, [updatedRepair, repairId], (err, result) => {
         if (err) {
           reject(err);
@@ -64,7 +74,7 @@ class Repair_Details {
 
   static deleteRepairForms(repairId) {
     return new Promise((resolve, reject) => {
-      const query = 'DELETE FROM Repair_Details WHERE repair_id = ?';
+      const query = 'DELETE FROM Repair_Details WHERE repairId = ?';
       db.query(query, [repairId], (err, result) => {
         if (err) {
           reject(err);
@@ -78,17 +88,26 @@ class Repair_Details {
   static createTable() {
     return new Promise((resolve, reject) => {
       const createTableQuery = `
-        CREATE TABLE IF NOT EXISTS Repair_Details (
-          repair_id INT AUTO_INCREMENT PRIMARY KEY,
-          pilot_id INT,
-          drone_id INT,
-          issue_description TEXT,
-          repair_date DATE,
-          repair_status ENUM('In Progress', 'Pending', 'Completed'),
-          FOREIGN KEY (pilot_id) REFERENCES Pilots(pilot_id),
-          FOREIGN KEY (drone_id) REFERENCES DroneInventory (drone_id)
-        )
-      `;
+      CREATE TABLE IF NOT EXISTS Repair_Details (
+        repairId INT AUTO_INCREMENT PRIMARY KEY,
+        pilotId INT,
+        droneId INT,
+        userId INT,
+        userName VARCHAR(255),
+        phoneNumber VARCHAR(20),
+        Country VARCHAR(100) NOT NULL,
+        StreetAddress VARCHAR(255) NOT NULL,
+        City VARCHAR(100) NOT NULL,
+        State VARCHAR(100) NOT NULL,
+        Zip VARCHAR(20) NOT NULL,
+        issueDescription TEXT,
+        repairDate DATE,
+        repairStatus ENUM('In Progress', 'Pending', 'Completed'),
+        repairCategory ENUM('Frame and Bodywork Repair', 'Battery Repair/Replacement', 'Camera and Gimbal Repair', 'Water Damage Repair'),
+        FOREIGN KEY (pilotId) REFERENCES Pilots(pilot_id),
+        FOREIGN KEY (droneId) REFERENCES DroneInventory(drone_id),
+        FOREIGN KEY (userId) REFERENCES users(UserID)
+    );`
       db.query(createTableQuery, (err, result) => {
         if (err) {
           reject(err);

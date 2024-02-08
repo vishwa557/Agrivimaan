@@ -24,11 +24,11 @@ const Login = () => {
       console.log('Login response:', response);
       if (response.status === 200) {
         const data = response.data;
-        console.log(data.token);
+        console.log(data);
 
         const accessToken = data.token;
         localStorage.setItem('accessToken', accessToken);
-
+        localStorage.setItem('userDetails', JSON.stringify(data.user));
         navigate('/');
         window.location.reload();
       } else {

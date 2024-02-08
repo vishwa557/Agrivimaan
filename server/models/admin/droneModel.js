@@ -85,6 +85,7 @@ class DroneInventory {
         const createTableQuery = `
           CREATE TABLE IF NOT EXISTS DroneInventory (
             drone_id INT PRIMARY KEY AUTO_INCREMENT,
+            user_id INT,
             drone_name VARCHAR(255),
             drone_model VARCHAR(255),
             Drone_img VARCHAR(255),

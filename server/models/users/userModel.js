@@ -6,8 +6,13 @@ class User {
     this.Name = user.Name;
     this.phone_number = user.phone_number;
     this.Password = user.Password;
-    this.address = user.address;
-  }
+    this.Country = user.Country;
+    this.StreetAddress = user.StreetAddress;
+    this.City = user.City;
+    this.State = user.State;
+    this.Zip = user.ZipPostalCode;
+}
+
 
   static createUser(newUser) {
     return new Promise((resolve, reject) => {
@@ -49,7 +54,11 @@ class User {
           Name VARCHAR(255) NOT NULL,
           phone_number VARCHAR(20) NOT NULL,
           Password VARCHAR(255) NOT NULL,
-          address VARCHAR(255) NOT NULL
+          Country VARCHAR(100) NOT NULL,
+          StreetAddress VARCHAR(255) NOT NULL,
+          City VARCHAR(100) NOT NULL,
+          State VARCHAR(100) NOT NULL,
+          Zip VARCHAR(20) NOT NULL
         )
         `;
         db.query(createTableQuery, (err, result) => {

@@ -1,11 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const RepairingFormsService = require("../../services/services/repairing_formService");
-
+const RepairService = require("../../services/services/repairing_formService");
 
 router.get("/", async (req, res) => {
   try {
-    const forms = await RepairingFormsService.getAllRepairForms();
+    const forms = await RepairService.getAllRepairForms();
     res.status(200).json(forms);
   } catch (error) {
     console.error(error);
@@ -16,7 +15,7 @@ router.get("/", async (req, res) => {
 router.get("/:formId", async (req, res) => {
   const formId = req.params.formId;
   try {
-    const form = await RepairingFormsService.getRepairFormsById(formId);
+    const form = await RepairService.getRepairFormsById(formId);
     if (!form) {
       res.status(404).json({ error: "Form not found" });
     } else {
@@ -29,22 +28,21 @@ router.get("/:formId", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  console.log("HI")
   const newForm = req.body;
   try {
-    const result = await RepairingFormsService.createRepairForms(newForm);
-    res.status(201).json({ message: 'Form created successfully', result });
+    const result = await RepairService.createRepairForms(newForm);
+    res.status(201).json({ message: 'Your request have been submitted successfully', result });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to create a new form' });
   }
 });
 
-router.put("/updated_forms/:formId", async (req, res) => {
+router.put("/:formId", async (req, res) => {
   const formId = req.params.formId;
   const updatedForm = req.body;
   try {
-    const result = await RepairingFormsService.updateRepairForms(formId, updatedForm);
+    const result = await RepairService.updateRepairForms(formId, updatedForm);
     res.status(200).json({ message: 'Form updated successfully', result });
   } catch (error) {
     console.error(error);
@@ -52,10 +50,10 @@ router.put("/updated_forms/:formId", async (req, res) => {
   }
 });
 
-router.delete("/delete_forms/:formId", async (req, res) => {
+router.delete("/:formId", async (req, res) => {
   const formId = req.params.formId;
   try {
-    const result = await RepairingFormsService.deleteRepairForms(formId);
+    const result = await RepairService.deleteRepairForms(formId);
     res.status(200).json({ message: 'Form deleted successfully', result });
   } catch (error) {
     console.error(error);

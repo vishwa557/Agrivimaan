@@ -26,7 +26,7 @@ const Carousel = ({ images }) => {
   };
 
   return (
-    <div id="default-carousel" className="relative w-full" data-carousel="slide">
+    <div id="default-carousel" className="relative w-full mb-10" data-carousel="slide" >
       {/* Carousel wrapper */}
       <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
         {images.map((image, index) => (
@@ -39,7 +39,7 @@ const Carousel = ({ images }) => {
           >
             <img
               src={image}
-              className=" block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+              className="block w-full h-full object-cover"
               alt={`Slide ${index + 1}`}
             />
           </div>
@@ -83,3 +83,4 @@ const Carousel = ({ images }) => {
 };
 
 export default Carousel;
+

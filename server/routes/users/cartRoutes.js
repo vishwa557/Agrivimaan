@@ -3,64 +3,42 @@ const router = express.Router();
 const CartService = require("../../services/users/cartService");
 const verifyToken = require("../../middleware/verifyToken");
 
-router.get("/", async (req, res) => {
-  try {
-    const cartItems = await CartService.getAllCartItems();
-    res.status(200).json(cartItems);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Failed to fetch cart items" });
-  }
+// Route for adding item to cart
+router.post('/add', (req, res) => {
+  const { user_id, drone_id, quantity } = req.body;
+
+  CartService.addToCart(user_id, drone_id, quantity )
+    .then(message => res.status(200).json({ message }))
+    .catch(error => res.status(500).json({ error }));
 });
 
-router.get("/:cartId", async (req, res) => {
-  const cartId = req.params.cartId;
-  try {
-    const cartItem = await CartService.getCartItemById(cartId);
-    if (!cartItem) {
-      res.status(404).json({ error: "Cart item not found" });
-    } else {
-      res.status(200).json(cartItem);
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Failed to fetch cart item" });
-  }
+// Route for retrieving cart items by user ID
+router.get('/:user_id', (req, res) => {
+  const { user_id } = req.params;
+
+  CartService.getCartItemsByUserId(user_id)
+    .then(cartItems => res.status(200).json(cartItems))
+    .catch(error => res.status(500).json({ error }));
 });
 
-router.post("/", async (req, res) => {
-  console.log(req.body);
-  const newCartItem = req.body;
-  try {
-    const result = await CartService.createCartItem(newCartItem);
-    res.status(201).json({ message: 'Cart item created successfully', result });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Failed to create a new cart item' });
-  }
+// Route for removing item from cart
+router.delete('/remove/:user_id/:drone_id', (req, res) => {
+  const { user_id, drone_id } = req.params;
+
+  CartService.removeFromCart(user_id, drone_id)
+    .then(message => res.status(200).json({ message }))
+    .catch(error => res.status(500).json({ error }));
 });
 
-router.put("/:cartId", async (req, res) => {
-  const cartId = req.params.cartId;
-  const updatedCartItem = req.body;
-  try {
-    const result = await CartService.updateCartItem(cartId, updatedCartItem);
-    res.status(200).json({ message: 'Cart item updated successfully', result });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Failed to update the cart item' });
-  }
+// Route for updating the quantity of a product in the user's cart
+router.put('/update-quantity/:user_id/:drone_id', (req, res) => {
+  const { user_id, drone_id } = req.params;
+  const { quantity } = req.body;
+
+  CartService.updateCartItemQuantity(user_id, drone_id, quantity)
+    .then(message => res.status(200).json({ message }))
+    .catch(error => res.status(500).json({ error }));
 });
 
-router.delete("/:cartId", async (req, res) => {
-  const cartId = req.params.cartId;
-  try {
-    const result = await CartService.deleteCartItem(cartId);
-    res.status(200).json({ message: 'Cart item deleted successfully', result });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Failed to delete the cart item' });
-  }
-});
 
 module.exports = router;

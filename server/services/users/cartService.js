@@ -1,53 +1,39 @@
 const ShoppingCart = require('../../models/users/cartModel');
 
 class CartService {
-  static async getAllCartItems() {
+  
+  static async addToCart(user_id, product_id, quantity) {
     try {
-      return await ShoppingCart.getAllCartItems();
+      return await ShoppingCart.addToCart(user_id, product_id, quantity);
     } catch (error) {
       throw error;
     }
   }
 
-  static async getCartItemById(cartId) {
+  static async getCartItemsByUserId(user_id) {
     try {
-      return await ShoppingCart.getCartItemById(cartId);
+      return await ShoppingCart.getCartItemsByUserId(user_id);
     } catch (error) {
       throw error;
     }
   }
 
-  static async createCartItem(cartItemData) {
+  static async removeFromCart(user_id, product_id) {
     try {
-      const newCartItem = {
-        OrderID: cartItemData.OrderID,
-        drone_id: cartItemData.drone_id,
-        QuantityInCart: cartItemData.QuantityInCart,
-        TotalCost: cartItemData.TotalCost,
-      };
-
-      const createdCartItem = await ShoppingCart.createCartItem(newCartItem);
-      return createdCartItem;
+      return await ShoppingCart.removeFromCart(user_id, product_id);
     } catch (error) {
       throw error;
     }
   }
 
-  static async updateCartItem(cartId, updatedCartItem) {
+  static async updateCartItemQuantity(user_id, product_id, new_quantity) {
     try {
-      return await ShoppingCart.updateCartItem(cartId, updatedCartItem);
+      return await ShoppingCart.updateCartItemQuantity(user_id, product_id, new_quantity);
     } catch (error) {
       throw error;
     }
   }
 
-  static async deleteCartItem(cartId) {
-    try {
-      return await ShoppingCart.deleteCartItem(cartId);
-    } catch (error) {
-      throw error;
-    }
-  }
   static async createShoppingCartTable() {
     try {
       return await ShoppingCart.createShoppingCartTable();
@@ -55,7 +41,6 @@ class CartService {
       throw error;
     }
   }
-  
 }
 
 module.exports = CartService;

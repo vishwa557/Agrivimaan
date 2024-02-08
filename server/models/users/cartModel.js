@@ -1,111 +1,98 @@
-  const db = require('../../config/db');
+const db = require('../../config/db');
 
-  class ShoppingCart {
-    constructor(cart) {
-      this.CartID = cart.CartID;
-      this.OrderID = cart.OrderID;
-      this.drone_id = cart.drone_id;
-      this.Price = cart.Price;
-      this.QuantityInCart = cart.QuantityInCart;
-      this.TotalCost = cart.TotalCost;
-    }
-
-    static createCartItem(newCartItem) {
-      return new Promise((resolve, reject) => {
-        // Calculate total cost based on the price and quantity
-        // const totalCost = newCartItem.QuantityInCart * newCartItem.Price;
-        // newCartItem.TotalCost = totalCost;
-
-        const query = 'INSERT INTO ShoppingCart SET ?';
-        db.query(query, newCartItem, (err, result) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(result);
-          }
-        });
-      });
-    }
-
-    static getAllCartItems() {
-      return new Promise((resolve, reject) => {
-        const query = 'SELECT * FROM ShoppingCart';
-        db.query(query, (err, result) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(result);
-          }
-        });
-      });
-    }
-
-    static getCartItemById(cartId) {
-      return new Promise((resolve, reject) => {
-        const query = 'SELECT * FROM ShoppingCart WHERE CartID = ?';
-        db.query(query, [cartId], (err, result) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(result[0]);
-          }
-        });
-      });
-    }
-
-    static deleteCartItem(cartId) {
-      return new Promise((resolve, reject) => {
-        const query = 'DELETE FROM ShoppingCart WHERE CartID = ?';
-        db.query(query, [cartId], (err, result) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(result);
-          }
-        });
-      });
-    }
-
-    static updateCartItem(cartId, updatedCartItem) {
-      return new Promise((resolve, reject) => {
-        // Calculate total cost based on the updated quantity and price
-        // const totalCost = updatedCartItem.QuantityInCart * updatedCartItem.Price;
-        // updatedCartItem.TotalCost = totalCost;
-
-        const query = 'UPDATE ShoppingCart SET ? WHERE CartID = ?';
-        db.query(query, [updatedCartItem, cartId], (err, result) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(result);
-          }
-        });
-      });
-    }
-    static createShoppingCartTable() {
-      return new Promise((resolve, reject) => {
-        const createTableQuery = `
-          CREATE TABLE IF NOT EXISTS ShoppingCart (
-            CartID INT AUTO_INCREMENT PRIMARY KEY,
-            OrderID INT,
-            drone_id INT,
-            QuantityInCart INT,
-            TotalCost DECIMAL(10, 2),
-            FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
-            FOREIGN KEY (drone_id) REFERENCES DroneInventory(drone_id)
-          )
-        `;
-        db.query(createTableQuery, (err, result) => {
-          if (err) {
-            reject(err);
-          } else {
-            console.log("ShoppingCart table created successfully");
-            resolve(result);
-          }
-        });
-      });
-    }
+class ShoppingCart {
+  constructor(cart) {
+    this.CartID = cart.CartID;
+    this.user_id = cart.user_id;
+    this.drone_id = cart.drone_id;
+    this.quantity = cart.quantity; // Modified property name
     
   }
 
-  module.exports = ShoppingCart;
+// Insert a new row into the cart table
+static addToCart  (user_id, drone_id, quantity) {
+  return new Promise((resolve, reject) => {
+    console.log(user_id,drone_id, quantity)
+    const insertQuery = 'INSERT INTO ShoppingCart (user_id, drone_id, quantity) VALUES (?, ?, ?)';
+    console.log(insertQuery)
+    db.query(insertQuery, [user_id, drone_id, quantity], (err, result) => {
+      if (err) {
+        console.log(err)
+        reject('Failed to add item to cart');
+      } else {
+        resolve('Item added to cart successfully', result);
+      }
+    });
+  });
+};
+
+// Retrieve the products in the user's cart
+static getCartItemsByUserId (user_id) {
+  return new Promise((resolve, reject) => {
+    const selectQuery = 'SELECT * FROM ShoppingCart WHERE user_id = ?';
+    db.query(selectQuery, [user_id], (err, result) => {
+      if (err) {
+        reject('Failed to retrieve cart items');
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+
+// Remove a product from the user's cart
+static removeFromCart  (user_id, drone_id)  {
+  return new Promise((resolve, reject) => {
+    const deleteQuery = 'DELETE FROM ShoppingCart WHERE user_id = ? AND drone_id = ?';
+    db.query(deleteQuery, [user_id, drone_id], (err, result) => {
+      if (err) {
+        reject('Failed to remove item from cart');
+      } else {
+        resolve('Item removed from cart successfully');
+      }
+    });
+  });
+};
+
+// Update the quantity of a product in the user's cart
+static updateCartItemQuantity (user_id, drone_id, new_quantity)  {
+  return new Promise((resolve, reject) => {
+    const updateQuery = 'UPDATE ShoppingCart SET quantity = ? WHERE user_id = ? AND drone_id = ?';
+    db.query(updateQuery, [new_quantity, user_id, drone_id], (err, result) => {
+      if (err) {
+        reject('Failed to update quantity of cart item');
+      } else {
+        resolve('Quantity updated successfully');
+      }
+    });
+  });
+};
+
+  // Other static methods remain unchanged
+
+  static createShoppingCartTable() {
+    return new Promise((resolve, reject) => {
+      const createTableQuery = `
+        CREATE TABLE IF NOT EXISTS ShoppingCart (
+          CartID INT AUTO_INCREMENT PRIMARY KEY,
+          user_id INT,
+          drone_id INT,
+          quantity INT,
+          FOREIGN KEY (user_id) REFERENCES users(UserID), 
+          FOREIGN KEY (drone_id) REFERENCES DroneInventory(drone_id)
+        )
+      `;
+      db.query(createTableQuery, (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          console.log("ShoppingCart table created successfully");
+          resolve(result);
+        }
+      });
+    });
+  }
+}
+
+module.exports = ShoppingCart;
+

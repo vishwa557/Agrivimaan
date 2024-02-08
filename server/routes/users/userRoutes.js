@@ -10,10 +10,10 @@ const twilio = require('twilio');
 
 router.post('/register', async (req, res) => {
   console.log(userService)
-  const { error } = registerValidation.validate(req.body);
-  if (error) {
-    return res.status(400).json({ error: error.details[0].message });
-  }
+  // const { error } = registerValidation.validate(req.body);
+  // if (error) {
+  //   return res.status(400).json({ error: error.details[0].message });
+  // }
   try {
     const userData = req.body;
     
@@ -30,12 +30,13 @@ router.post('/login', async (req, res) => {
   if (error) {
     return res.status(400).json({ error: error.details[0].message });
   }
-  console.log(req.body)
+ 
   try {
     const { phone_number, Password } = req.body;
  
     const result = await userService.loginUser(phone_number, Password);
-    res.status(200).json({ message: 'Login successful', token: result.token });
+    console.log(result)
+    res.status(200).json({ message: 'Login successful', token: result.token, user: result.user });
   } catch (error) {
     res.status(401).json({ error: error.message });
   }

@@ -20,12 +20,21 @@ class SprayingService {
   static async createSprayingForms(sprayingData) {
     try {
       const newSpraying = {
-        pilot_id: sprayingData.pilot_id,
-        drone_id: sprayingData.drone_id,
-        acers_to_spray: sprayingData.acers_to_spray,
-        chemical_used: sprayingData.chemical_used,
-        spraying_status : sprayingData.spraying_status,
-        address: sprayingData.address,
+        pilotId: sprayingData.pilotId,
+        droneId: sprayingData.droneId,
+        userId: sprayingData.userId,
+        userName: sprayingData.userName,
+        phoneNumber: sprayingData.phoneNumber,
+        serviceCategory: sprayingData.serviceCategory,
+        acersToSpray: sprayingData.acersToSpray,
+        chemicalUsed: sprayingData.chemicalUsed,
+        serviceRequestedDate: sprayingData.serviceRequestedDate,
+        sprayingStatus: sprayingData.sprayingStatus,
+        Country: sprayingData.Country,
+        StreetAddress: sprayingData.StreetAddress,
+        City: sprayingData.City,
+        State: sprayingData.State,
+        Zip: sprayingData.Zip
       };
 
       const createdSpraying = await Spraying_Details.createSprayingForms(newSpraying);
@@ -49,7 +58,7 @@ class SprayingService {
     } catch (error) {
       throw error;
     }
-}
+  }
 
   static async createTable() {
     try {

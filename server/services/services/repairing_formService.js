@@ -20,11 +20,20 @@ class RepairService {
   static async createRepairForms(repairData) {
     try {
       const newRepair = {
-        pilot_id: repairData.pilot_id,
-        drone_id: repairData.drone_id,
-        issue_description: repairData.issue_description,
-        repair_date: repairData.repair_date,
-        repair_status: repairData.repair_status,
+        pilotId: repairData.pilotId,
+        droneId: repairData.droneId,
+        userId: repairData.userId,
+        userName: repairData.userName,
+        phoneNumber: repairData.phoneNumber,
+        Country: repairData.Country,
+        StreetAddress: repairData.StreetAddress,
+        City: repairData.City,
+        State: repairData.State,
+        Zip: repairData.Zip,
+        issueDescription: repairData.issueDescription,
+        repairDate: repairData.repairDate,
+        repairStatus: repairData.repairStatus,
+        repairCategory: repairData.repairCategory
       };
 
       const createdRepair = await Repair_Details.createRepairForms(newRepair);
