@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import image from '../Data/images/Drone-img.png'
+import image from '../../Data/images/Drone-img.png'
 
 const DroneRepairForm = () => {
   // State to manage form data

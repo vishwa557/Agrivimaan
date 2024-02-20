@@ -10,21 +10,24 @@ class ShoppingCart {
   }
 
 // Insert a new row into the cart table
-static addToCart  (user_id, drone_id, quantity) {
+static addToCart(user_id, drone_id, quantity) {
   return new Promise((resolve, reject) => {
-    console.log(user_id,drone_id, quantity)
-    const insertQuery = 'INSERT INTO ShoppingCart (user_id, drone_id, quantity) VALUES (?, ?, ?)';
-    console.log(insertQuery)
-    db.query(insertQuery, [user_id, drone_id, quantity], (err, result) => {
-      if (err) {
-        console.log(err)
-        reject('Failed to add item to cart');
-      } else {
-        resolve('Item added to cart successfully', result);
-      }
-    });
+      const insertQuery = 'INSERT INTO ShoppingCart (user_id, drone_id, quantity) VALUES (?, ?, ?)';
+      db.query(insertQuery, [user_id, drone_id, quantity], (err, result) => {
+          if (err) {
+              if (err.code === 'ER_DUP_ENTRY') {
+                  reject('Duplicate entry for drone_id');
+              } else {
+                  console.error(err);
+                  reject('Failed to add item to cart');
+              }
+          } else {
+              resolve('Item added to cart successfully', result);
+          }
+      });
   });
 };
+
 
 // Retrieve the products in the user's cart
 static getCartItemsByUserId (user_id) {
@@ -76,7 +79,7 @@ static updateCartItemQuantity (user_id, drone_id, new_quantity)  {
         CREATE TABLE IF NOT EXISTS ShoppingCart (
           CartID INT AUTO_INCREMENT PRIMARY KEY,
           user_id INT,
-          drone_id INT,
+          drone_id INT UNIQUE,
           quantity INT,
           FOREIGN KEY (user_id) REFERENCES users(UserID), 
           FOREIGN KEY (drone_id) REFERENCES DroneInventory(drone_id)

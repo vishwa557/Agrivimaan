@@ -27,6 +27,21 @@ router.get("/:sprayingFormId", async (req, res) => {
   }
 });
 
+router.get("/form/:userId", async (req, res) => {
+  const userId = req.params.userId;
+  try {
+    const user = await SprayingService.getSprayingFormsByUserId(userId);
+    if (!user) {
+      res.status(404).json({ error: "Spraying form not found with this user" });
+    } else {
+      res.status(200).json(user);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch spraying form with this user" });
+  }
+});
+
 router.post("/", async (req, res) => {
   const newSprayingForm = req.body;
   try {
@@ -38,11 +53,12 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:sprayingFormId", async (req, res) => {
-  const sprayingFormId = req.params.sprayingFormId;
-  const updatedSprayingForm = req.body;
+router.put("/update_status/:sprayingId", async (req, res) => {
+  const sprayingId = req.params.sprayingId;
+  const {sprayingStatus} = req.body;
   try {
-    const result = await SprayingService.updateSprayingForms(sprayingFormId, updatedSprayingForm);
+    const result = await SprayingService.updateSprayingForms(sprayingId, sprayingStatus);
+    console.log(sprayingId, sprayingStatus)
     res.status(200).json({ message: 'Spraying form updated successfully', result });
   } catch (error) {
     console.error(error);
@@ -50,7 +66,7 @@ router.put("/:sprayingFormId", async (req, res) => {
   }
 });
 
-router.delete("/:sprayingFormId", async (req, res) => {
+router.delete("/delete_form/:sprayingFormId", async (req, res) => {
   const sprayingFormId = req.params.sprayingFormId;
   try {
     const result = await SprayingService.deleteSprayingForms(sprayingFormId);
@@ -58,6 +74,17 @@ router.delete("/:sprayingFormId", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to delete the spraying form' });
+  }
+});
+
+router.put("/cancel_request/:sprayingId", async (req, res) => {
+  const sprayingId = req.params.sprayingId;
+  try {
+    const result = await SprayingService.cancelSprayingForms(sprayingId);
+    res.status(200).json({ message: 'Spraying request cancelled successfully', result });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to cancel the spraying request' });
   }
 });
 

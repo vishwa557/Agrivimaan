@@ -14,7 +14,7 @@ class Spraying_Details {
     this.serviceRequestedDate = spraying.serviceRequestedDate;
     this.sprayingStatus = spraying.sprayingStatus;
     this.Country = spraying.Country;
-    this.Street_Address = spraying.Street_Address;
+    this.StreetAddress = spraying.StreetAddress;
     this.City = spraying.City;
     this.State = spraying.State;
     this.Zip = spraying.Zip;
@@ -45,6 +45,19 @@ class Spraying_Details {
     });
   }
 
+  static getSprayingFormsByUserId(userId) {
+    return new Promise((resolve, reject) => {
+      const query = 'SELECT * FROM Spraying_Details WHERE userId = ?';
+      db.query(query, [userId], (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  }
+
   static createSprayingForms(newSpraying) {
     return new Promise((resolve, reject) => {
       const query = 'INSERT INTO Spraying_Details SET ?';
@@ -58,10 +71,24 @@ class Spraying_Details {
     });
   }
 
-  static updateSprayingForms(sprayingId, updatedSpraying) {
+  static updateSprayingForms(sprayingId, sprayingStatus) {
     return new Promise((resolve, reject) => {
-      const query = 'UPDATE Spraying_Details SET ? WHERE sprayingId = ?';
-      db.query(query, [updatedSpraying, sprayingId], (err, result) => {
+      const query = 'UPDATE Spraying_Details SET sprayingStatus = ? WHERE sprayingId = ?';
+      db.query(query, [sprayingStatus, sprayingId], (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  }
+
+  static cancelSprayingForms(sprayingId) {
+    return new Promise((resolve, reject) => {
+      const query = 'UPDATE Spraying_Details SET sprayingStatus = ? WHERE sprayingId = ?';
+      const updatedStatus = 'Cancelled'
+      db.query(query, [updatedStatus, sprayingId], (err, result) => {
         if (err) {
           reject(err);
         } else {
@@ -98,9 +125,9 @@ class Spraying_Details {
         acersToSpray DECIMAL(10, 2),
         chemicalUsed VARCHAR(100),
         serviceRequestedDate DATE,
-        sprayingStatus ENUM('Unassigned', 'Assigned', 'Hold', 'In Progress', 'Pending', 'Completed'),
+        sprayingStatus ENUM('Pending', 'Assigned','Hold','In Progress','Completed', 'Cancelled'),
         Country VARCHAR(100) NOT NULL,
-        Street_Address VARCHAR(255) NOT NULL,
+        StreetAddress VARCHAR(255) NOT NULL,
         City VARCHAR(100) NOT NULL,
         State VARCHAR(100) NOT NULL,
         Zip VARCHAR(20) NOT NULL,

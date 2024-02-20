@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { MenuItem, Select, TextField, Button, Grid } from "@mui/material";
-import image from '../Data/images/spraying-img.png';
+import image from '../../Data/images/spraying-img.png';
 
 const DroneSprayingForm = () => {
     const [userName, setUserName] = useState('');
@@ -160,7 +160,7 @@ const DroneSprayingForm = () => {
                                             <TextField
                                                 fullWidth
                                                 type="date"
-                                                label="Service Requested Date"
+                                                label=""
                                                 value={serviceRequestedDate}
                                                 onChange={(e) => setServiceRequestedDate(e.target.value)}
                                                 className="w-full py-2 px-3 rounded-md border border-gray-300 focus:outline-none focus:border-indigo-500"

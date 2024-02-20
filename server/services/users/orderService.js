@@ -9,9 +9,17 @@ class OrderService {
     }
   }
 
-  static async getOrderById(orderId) {
+  static async getOrderById(OrderID) {
     try {
-      return await Orders.getOrderById(orderId);
+      return await Orders.getOrderById(OrderID);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getOrderByUserId(UserID) {
+    try {
+      return await Orders.getOrderByUserId(UserID);
     } catch (error) {
       throw error;
     }
@@ -22,6 +30,7 @@ class OrderService {
       const newOrder = {
         UserID: orderData.UserID,
         ProductID: orderData.ProductID,
+        UserName: orderData.UserName,
         OrderQuantity: orderData.OrderQuantity,
         TotalAmount: orderData.TotalAmount,
         OrderDate: orderData.OrderDate,
@@ -43,9 +52,25 @@ class OrderService {
     }
   }
 
+  static async updateOrderStatus(orderId, updatedStatus) {
+    try {
+      return await Orders.updateOrderStatus(orderId, updatedStatus);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async deleteOrder(orderId) {
     try {
       return await Orders.deleteOrder(orderId);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async cancelOrder(orderId) {
+    try {
+      return await Orders.cancelOrder(orderId);
     } catch (error) {
       throw error;
     }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Grid, Paper, Typography } from '@mui/material';
 import Card from './Card';
-import { services, additionalImages, carouselImages } from '../Data/servicesData';
+import { services, additionalImages, carouselImages } from '../../Data/servicesData';
 import Carousel from './Carousel';
 
 const LandingPage = () => {

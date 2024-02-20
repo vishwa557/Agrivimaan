@@ -27,6 +27,21 @@ router.get("/:formId", async (req, res) => {
   }
 });
 
+router.get("/form/:userId", async (req, res) => {
+  const userId = req.params.userId;
+  try {
+    const user = await RepairService.getRepairFormsByUserId(userId);
+    if (!user) {
+      res.status(404).json({ error: "user not found" });
+    } else {
+      res.status(200).json(user);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch userForms" });
+  }
+});
+
 router.post("/", async (req, res) => {
   const newForm = req.body;
   try {
@@ -38,11 +53,12 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:formId", async (req, res) => {
-  const formId = req.params.formId;
-  const updatedForm = req.body;
+router.put("/update_status/:repairId", async (req, res) => {
+  const repairId = req.params.repairId;
+  const { repairStatus } = req.body;
   try {
-    const result = await RepairService.updateRepairForms(formId, updatedForm);
+    const result = await RepairService.updateRepairForms(repairId, repairStatus);
+    console.log(repairId, repairStatus)
     res.status(200).json({ message: 'Form updated successfully', result });
   } catch (error) {
     console.error(error);
@@ -50,14 +66,26 @@ router.put("/:formId", async (req, res) => {
   }
 });
 
-router.delete("/:formId", async (req, res) => {
-  const formId = req.params.formId;
+router.delete("/delete_form/:repairId", async (req, res) => {
+  const repairId = req.params.repairId;
   try {
-    const result = await RepairService.deleteRepairForms(formId);
+    const result = await RepairService.deleteRepairForms(repairId);
     res.status(200).json({ message: 'Form deleted successfully', result });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to delete the form' });
+  }
+
+});
+
+router.put("/cancel_request/:repairId", async (req, res) => {
+  const repairId = req.params.repairId;
+  try {
+    const result = await RepairService.cancelRepairForms(repairId);
+    res.status(200).json({ message: 'Form cancelled successfully', result });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to cancel the form' });
   }
 });
 

@@ -8,8 +8,13 @@ class Pilot {
     this.password = pilot.password;
     this.phone_number = pilot.phone_number;
     this.profession = pilot.profession;
-    this.created_at = pilot.created_at;
-  }
+    this.country = pilot.country;
+    this.streetAddress = pilot.streetAddress;
+    this.city = pilot.city;
+    this.state = pilot.state;
+    this.zip = pilot.zip;
+}
+
 
   static getAllPilots() {
     return new Promise((resolve, reject) => {
@@ -67,6 +72,23 @@ class Pilot {
     });
   }
 
+  static getPilotByEmail(email) {
+    // console.log(phone_number)
+    return new Promise((resolve, reject) => {
+      db.query(
+        "SELECT * FROM Pilots WHERE email = ?",
+        [email],
+        (err, results) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(results[0]);
+          }
+        }
+      );
+    });
+  }
+
   static updatePilot(pilotId, updatedPilot) {
     return new Promise((resolve, reject) => {
       const query = 'UPDATE Pilots SET ? WHERE pilot_id = ?';
@@ -83,16 +105,19 @@ class Pilot {
   static createTable() {
     return new Promise((resolve, reject) => {
       const createTableQuery = `
-        CREATE TABLE IF NOT EXISTS Pilots (
-          pilot_id INT AUTO_INCREMENT PRIMARY KEY,
-          username VARCHAR(50) NOT NULL,
-          email VARCHAR(100) NOT NULL,
-          password VARCHAR(255) NOT NULL,
-          phone_number VARCHAR(20) NOT NULL UNIQUE,
-          profession ENUM('Chemical Sprayer', 'Drone Mechanic'),
-          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-      `;
+      CREATE TABLE IF NOT EXISTS Pilots (
+        pilot_id INT AUTO_INCREMENT PRIMARY KEY,
+        username VARCHAR(50) NOT NULL,
+        email VARCHAR(100) NOT NULL,
+        password VARCHAR(255) NOT NULL,
+        phone_number VARCHAR(20) NOT NULL UNIQUE,
+        profession ENUM('Chemical Sprayer', 'Drone Mechanic'),
+        country VARCHAR(100),
+        streetAddress VARCHAR(255),
+        city VARCHAR(100),
+        state VARCHAR(100) ,
+        zip VARCHAR(20) 
+    )`;
       db.query(createTableQuery, (err, result) => {
         if (err) {
           reject(err);

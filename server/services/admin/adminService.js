@@ -46,16 +46,13 @@ class AdminService {
   static async loginAdmin(email, password) {
     try {
       const admin = await Admin.getAdminByEmail(email);
-
       if (!admin) {
-        throw new Error('Phone number not found');
+        throw new Error('email not found');
       }
-
       const isMatch = await bcrypt.compare(password, admin.password);
       if (!isMatch) {
-        throw new Error('Invalid phone number or password');
+        throw new Error('Invalid email or password');
       }
-
       const token = jwt.sign({ email: admin.email }, config.jwt_secret_key, { expiresIn: '1h' });
       return { token };
     } catch (error) {

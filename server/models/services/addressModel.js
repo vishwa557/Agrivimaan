@@ -39,6 +39,20 @@ class Address {
     });
   }
 
+  static getAllAddressesByUserId(user_id) {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT * FROM Addresses WHERE user_id = ?';
+        db.query(query, [user_id], (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+}
+
+
   static getAddressById(addressId) {
     return new Promise((resolve, reject) => {
       const query = 'SELECT * FROM Addresses WHERE address_id = ?';

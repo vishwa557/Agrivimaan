@@ -4,14 +4,12 @@ const AdminService = require("../../services/admin/adminService");
 const verifyToken = require("../../middleware/verifyToken");
 
 router.post('/login', async (req, res) => {
-  console.log(req.body)
   // const { error } = loginValidation.validate(req.body);
   // if (error) {
   //   return res.status(400).json({ error: error.details[0].message });
   // }
   try {
     const { email, password } = req.body;
-  console.log(email)
     const result = await AdminService.loginAdmin(email, password);
     res.status(200).json({ message: 'Login successful', token: result.token });
   } catch (error) {
