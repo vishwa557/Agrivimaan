@@ -19,13 +19,36 @@ const getPilotById = async (pilotId) => {
   }
 };
 
+// const createPilot = async (userData) => {
+//   console.log(userData)
+//   try {
+//     const existingUser = await Pilot.getPilotByPhoneNumber(userData.phone_number);
+
+//     if (existingUser) {
+//       throw new Error('Phone number already exists');
+//     }
+
+//     const hashedPassword = await bcrypt.hash(userData.password, 10);
+//     const newPilot = {
+//       username: userData.username,
+//       email: userData.email,
+//       password: hashedPassword,
+//       phone_number: userData.phone_number,
+//       profession: userData.profession
+//     };
+//     const createdPilot = await Pilot.createPilot(newPilot);
+//     return createdPilot;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
 const createPilot = async (userData) => {
   console.log(userData)
   try {
-    const existingUser = await Pilot.getPilotByPhoneNumber(userData.phone_number);
+    const existingUser = await Pilot.getPilotByEmail(userData.email);
 
     if (existingUser) {
-      throw new Error('Phone number already exists');
+      throw new Error('email already exists');
     }
 
     const hashedPassword = await bcrypt.hash(userData.password, 10);
@@ -34,9 +57,14 @@ const createPilot = async (userData) => {
       email: userData.email,
       password: hashedPassword,
       phone_number: userData.phone_number,
-      profession: userData.profession
-    };
-
+      profession: userData.profession,
+      country: userData.country,
+      streetAddress: userData.streetAddress,
+      city: userData.city,
+      state: userData.state,
+      zip: userData.zip
+  };
+   
     const createdPilot = await Pilot.createPilot(newPilot);
     return createdPilot;
   } catch (error) {
@@ -44,18 +72,19 @@ const createPilot = async (userData) => {
   }
 };
 
-const loginUser = async (phone_number,password) => {
+
+const loginUser = async (email, password) => {
   try {
-    const user = await Pilot.getPilotByPhoneNumber(phone_number);
+    const user = await Pilot.getPilotByEmail(email);
     console.log(user, password)
     if (!user) {
-      throw new Error('Phone number not found');
+      throw new Error('email not found');
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       throw new Error('Invalid phone number or password');
     }
-    const token = jwt.sign({ phone_number: user.phone_number }, config.jwt_secret_key, {expiresIn: '1h'});
+    const token = jwt.sign({ email: user.email }, config.jwt_secret_key, {expiresIn: '1h'});
     return { token };
   } catch (error) {
     throw error;

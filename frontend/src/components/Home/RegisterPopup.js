@@ -160,7 +160,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Typography, Button } from '@mui/material';
-import Transition from './Animations/Transitions';
+import Transition from '../Animations/Transitions';
 
 const Register = () => {
   const [name, setName] = useState('');

@@ -13,10 +13,25 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:orderId", async (req, res) => {
-  const orderId = req.params.orderId;
+router.get("/:OrderID", async (req, res) => {
+  const OrderID = req.params.OrderID;
   try {
-    const order = await OrderService.getOrderById(orderId);
+    const order = await OrderService.getOrderById(OrderID);
+    if (!order) {
+      res.status(404).json({ error: "Order not found" });
+    } else {
+      res.status(200).json(order);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch order" });
+  }
+});
+
+router.get("/orders/:UserID", async (req, res) => {
+  const UserID = req.params.UserID;
+  try {
+    const order = await OrderService.getOrderByUserId(UserID);
     if (!order) {
       res.status(404).json({ error: "Order not found" });
     } else {
@@ -52,7 +67,19 @@ router.put("/:orderId", async (req, res) => {
   }
 });
 
-router.delete("/:orderId", async (req, res) => {
+router.put('/status/:orderId', async (req, res) => {
+  const { orderId } = req.params;
+  const { updatedStatus } = req.body;
+  try {
+    const result = await OrderService.updateOrderStatus(orderId, updatedStatus);
+    res.status(200).json({ message: 'Order updated successfully', result });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to update the order' });
+  }
+});
+
+router.delete("/delete/:orderId", async (req, res) => {
   const orderId = req.params.orderId;
   try {
     const result = await OrderService.deleteOrder(orderId);
@@ -60,6 +87,17 @@ router.delete("/:orderId", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to delete the order' });
+  }
+});
+
+router.put("/cancel_order/:orderId", async (req, res) => {
+  const orderId = req.params.orderId;
+  try {
+    const result = await OrderService.cancelOrder(orderId);
+    res.status(200).json({ message: 'Order cancenlled successfully', result });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to cancel the order' });
   }
 });
 module.exports = router;

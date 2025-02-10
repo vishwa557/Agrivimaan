@@ -42,7 +42,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
-router.get('/allUsers',verifyToken,  async (req, res) => {
+router.get('/allUsers',  async (req, res) => {
   try {
     const allUsers = await User.getAllUsers(); 
     res.status(200).json(allUsers);

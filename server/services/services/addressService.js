@@ -17,6 +17,14 @@ class AddressService {
     }
   }
 
+  static async getAllAddressesByUserId(user_id) {
+    try {
+      return await Address.getAllAddressesByUserId(user_id);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async getAddressById(addressId) {
     try {
       return await Address.getAddressById(addressId);

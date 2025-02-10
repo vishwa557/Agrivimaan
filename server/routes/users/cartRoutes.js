@@ -9,8 +9,15 @@ router.post('/add', (req, res) => {
 
   CartService.addToCart(user_id, drone_id, quantity )
     .then(message => res.status(200).json({ message }))
-    .catch(error => res.status(500).json({ error }));
+    .catch(error => {
+      if (error === 'Duplicate entry for drone_id') {
+        res.status(400).json({ error: 'Item already added to the Cart' });
+      } else {
+        res.status(500).json({ error: 'Failed to add item to cart' });
+      }
+    });
 });
+
 
 // Route for retrieving cart items by user ID
 router.get('/:user_id', (req, res) => {
@@ -34,7 +41,7 @@ router.delete('/remove/:user_id/:drone_id', (req, res) => {
 router.put('/update-quantity/:user_id/:drone_id', (req, res) => {
   const { user_id, drone_id } = req.params;
   const { quantity } = req.body;
-
+  console.log(user_id,drone_id,quantity)
   CartService.updateCartItemQuantity(user_id, drone_id, quantity)
     .then(message => res.status(200).json({ message }))
     .catch(error => res.status(500).json({ error }));

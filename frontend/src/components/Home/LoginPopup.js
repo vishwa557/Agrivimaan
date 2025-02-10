@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Typography, Button } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import Transition from './Animations/Transitions';
+import Transition from '../Animations/Transitions';
 
 
 const Login = () => {
@@ -28,7 +28,8 @@ const Login = () => {
 
         const accessToken = data.token;
         localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('userDetails', JSON.stringify(data.user));
+        const { Password, ...userDataWithoutPassword } = data.user;
+        localStorage.setItem('userDetails', JSON.stringify(userDataWithoutPassword));
         navigate('/');
         window.location.reload();
       } else {
@@ -39,7 +40,7 @@ const Login = () => {
     }
   };
 
-  const handleLoginClose =() => {
+  const handleLoginClose = () => {
     setOpen(false);
     navigate('/');
   }
@@ -99,7 +100,7 @@ const Login = () => {
               </button>
             </div>
           </div>
-          
+
         </section>
         <div className="mt-4 font-semibold text-sm text-slate-500 text-center md:text-left">
           Don't have an account?{' '}
@@ -112,16 +113,16 @@ const Login = () => {
         </div>
 
       </DialogContent>
-      
+
       <DialogActions>
-        
+
         <Button onClick={() => handleLoginClose()} color="inherit">
           Cancel
         </Button>
-        
+
       </DialogActions>
     </Dialog>
-    
+
   );
 };
 

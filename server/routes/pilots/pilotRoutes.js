@@ -42,7 +42,7 @@ router.post("/register", async (req, res) => {
   try {
     
     
-    const result = await PilotService.createPilot(newPilot);;
+    const result = await PilotService.createPilot(newPilot);
     res.status(201).json({ message: 'Pilot created successfully', result });
   } catch (error) {
     console.error(error);
@@ -57,9 +57,9 @@ router.post('/login', async (req, res) => {
   //   return res.status(400).json({ error: error.details[0].message });
   // }
   try {
-    const { phone_number, Password } = req.body;
+    const { email, Password } = req.body;
  
-    const result = await PilotService.loginUser(phone_number, Password);
+    const result = await PilotService.loginUser(email, Password);
     res.status(200).json({ message: 'Login successful', token: result.token });
   } catch (error) {
     res.status(401).json({ error: error.message });

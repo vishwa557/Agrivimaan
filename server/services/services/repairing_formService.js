@@ -17,6 +17,14 @@ class RepairService {
     }
   }
 
+  static async getRepairFormsByUserId(userId) {
+    try {
+      return await Repair_Details.getRepairFormsByUserId(userId);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async createRepairForms(repairData) {
     try {
       const newRepair = {
@@ -43,9 +51,9 @@ class RepairService {
     }
   }
 
-  static async updateRepairForms(repairId, updatedRepair) {
+  static async updateRepairForms(repairId, repairStatus) {
     try {
-      return await Repair_Details.updateRepairForms(repairId, updatedRepair);
+      return await Repair_Details.updateRepairForms(repairId, repairStatus);
     } catch (error) {
       throw error;
     }
@@ -54,6 +62,14 @@ class RepairService {
   static async deleteRepairForms(repairId) {
     try {
       return await Repair_Details.deleteRepairForms(repairId);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async cancelRepairForms(repairId) {
+    try {
+      return await Repair_Details.cancelRepairForms(repairId);
     } catch (error) {
       throw error;
     }

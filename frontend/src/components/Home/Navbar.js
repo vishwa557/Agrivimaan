@@ -21,10 +21,10 @@ import {
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import Logo from "../agrivimaan.png";
+import Logo from "../../agrivimaan.png";
 import { Link, useNavigate } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ({ cartItemCount, setCartItemCount}) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [currentLocation, setCurrentLocation] = useState("");
   const [selectedService, setSelectedService] = useState("");
@@ -33,36 +33,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
 
-
-  // const handleUserActivity = () => {
-  //   // Reset token timer on user activity
-  //   clearTimeout(tokenTimeout);
-  //   setTokenTimeout(setTimeout(handleTokenExpiration, 5 * 60 * 1000)); // 5 minutes in milliseconds
-  // };
-
-  // // Function to handle token expiration
-  // const handleTokenExpiration = () => {
-  //   setToken(false); // Expire token after 5 minutes of inactivity
-  // };
-  // let tokenTimeout;
-
-  // useEffect(() => {
-  //   // Set up token expiration timer when component mounts
-  //   tokenTimeout = setTimeout(handleTokenExpiration, 5 * 60 * 1000); // 5 minutes in milliseconds
-
-  //   // Add event listeners for user activity
-  //   window.addEventListener('mousemove', handleUserActivity);
-  //   window.addEventListener('keydown', handleUserActivity);
-
-  //   // Clean up event listeners when component unmounts
-  //   return () => {
-  //     clearTimeout(tokenTimeout);
-  //     window.removeEventListener('mousemove', handleUserActivity);
-  //     window.removeEventListener('keydown', handleUserActivity);
-  //   };
-  // }, []);
-
-  const handleDialogOpen = () => {
+ const handleDialogOpen = () => {
     setDialogOpen(true);
   };
 
@@ -93,9 +64,14 @@ const Navbar = () => {
     navigate('/register');
   };
 
+  const handleLogo = () => {
+    navigate('/')
+  }
+
   const handleLogout = () => {
     // Remove token from local storage and state
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('userDetails');
     setToken(null);
     navigate('/');
   };
@@ -141,6 +117,7 @@ const Navbar = () => {
               src={Logo}
               alt="Logo"
               style={{ width: "auto", height: "35px", marginLeft: "10px" }}
+              onClick={handleLogo}
             />
           </div>
           <Box width={100} />
@@ -255,22 +232,35 @@ const Navbar = () => {
                   onClose={handleProfileClose}
                 >
                   <MenuItem>
-                    <Typography variant="body1">User Name:Bharath </Typography>
+                  <Typography variant="body1">
+                    <Link to="/account" style={{ textDecoration: 'none', color: 'inherit' }}>Account</Link>
+                  </Typography>
                   </MenuItem>
                   <MenuItem>
-                    <Typography variant="body1">User ID: </Typography>
+                    <Typography variant="body1">
+                    <Link to="/your-orders" style={{ textDecoration: 'none', color: 'inherit' }}>Orders</Link>
+                    </Typography>
                   </MenuItem>
                   <MenuItem>
-                    <Typography variant="body1">User Email: </Typography>
+                    <Typography variant="body1">
+                    <Link to="/your-requests" style={{ textDecoration: 'none', color: 'inherit' }}>Requests</Link>
+
+                    </Typography>
                   </MenuItem>
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
+
                 <Link to="/shopping-cart">
-                <IconButton color="primary" aria-label="add to shopping cart">
-                  <AddShoppingCartIcon style={{ marginRight: "4px", fontSize: "30px" }} />
-                  
-                </IconButton>
+                  <div className="flex">
+                    {/* <IconButton color="primary" aria-label="add to shopping cart"> */}
+                    <AddShoppingCartIcon style={{ marginRight: "4px", fontSize: "30px", color: "black" }} />
+                    <div className="w-4 h-4 rounded-full flex justify-center item-center  bg-black text-white text-xs ">
+                      {cartItemCount}
+                    </div>
+                  </div>
+                  {/* </IconButton> */}
                 </Link>
+
               </>
             ) : (
               <>

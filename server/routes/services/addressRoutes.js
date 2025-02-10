@@ -23,6 +23,17 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/:user_id', async (req, res) => {
+  try {
+    const user_id = req.params.user_id;
+    const addresses = await AddressService.getAllAddressesByUserId(user_id);
+    res.status(200).json(addresses);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to fetch addresses' });
+  }
+});
+
 router.get('/:addressId', async (req, res) => {
   const addressId = req.params.addressId;
   try {

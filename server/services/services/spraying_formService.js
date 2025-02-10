@@ -17,9 +17,18 @@ class SprayingService {
     }
   }
 
+  static async getSprayingFormsByUserId(userId) {
+    try {
+      return await Spraying_Details.getSprayingFormsByUserId(userId);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async createSprayingForms(sprayingData) {
     try {
       const newSpraying = {
+        sprayingId:sprayingData.sprayingId,
         pilotId: sprayingData.pilotId,
         droneId: sprayingData.droneId,
         userId: sprayingData.userId,
@@ -44,9 +53,9 @@ class SprayingService {
     }
   }
 
-  static async updateSprayingForms(sprayingId, updatedSpraying) {
+  static async updateSprayingForms(sprayingId, sprayingStatus) {
     try {
-      return await Spraying_Details.updateSprayingForms(sprayingId, updatedSpraying);
+      return await Spraying_Details.updateSprayingForms(sprayingId, sprayingStatus);
     } catch (error) {
       throw error;
     }
@@ -55,6 +64,13 @@ class SprayingService {
   static async deleteSprayingForms(sprayingId) {
     try {
       return await Spraying_Details.deleteSprayingForms(sprayingId);
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async cancelSprayingForms(sprayingId) {
+    try {
+      return await Spraying_Details.cancelSprayingForms(sprayingId);
     } catch (error) {
       throw error;
     }

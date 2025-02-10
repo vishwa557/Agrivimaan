@@ -46,6 +46,19 @@ class Repair_Details {
     });
   }
 
+  static getRepairFormsByUserId(userId) {
+    return new Promise((resolve, reject) => {
+      const query = 'SELECT * FROM Repair_Details WHERE userId = ?';
+      db.query(query, [userId], (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  }
+
   static createRepairForms(newRepair) {
     return new Promise((resolve, reject) => {
       const query = 'INSERT INTO Repair_Details SET ?';
@@ -59,10 +72,10 @@ class Repair_Details {
     });
   }
 
-  static updateRepairForms(repairId, updatedRepair) {
+  static updateRepairForms(repairId, repairStatus) {
     return new Promise((resolve, reject) => {
-      const query = 'UPDATE Repair_Details SET ? WHERE repairId = ?';
-      db.query(query, [updatedRepair, repairId], (err, result) => {
+      const query = 'UPDATE Repair_Details SET repairStatus = ? WHERE repairId = ?';
+      db.query(query, [repairStatus, repairId], (err, result) => {
         if (err) {
           reject(err);
         } else {
@@ -72,6 +85,19 @@ class Repair_Details {
     });
   }
 
+  static cancelRepairForms(repairId) {
+    return new Promise((resolve, reject) => {
+        const query = 'UPDATE Repair_Details SET repairStatus = ? WHERE repairId = ?';
+        const updatedStatus = 'Cancelled';
+        db.query(query, [updatedStatus, repairId], (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+}
   static deleteRepairForms(repairId) {
     return new Promise((resolve, reject) => {
       const query = 'DELETE FROM Repair_Details WHERE repairId = ?';
@@ -79,7 +105,7 @@ class Repair_Details {
         if (err) {
           reject(err);
         } else {
-          resolve(result);
+          resolve(result[0]);
         }
       });
     });
@@ -102,7 +128,7 @@ class Repair_Details {
         Zip VARCHAR(20) NOT NULL,
         issueDescription TEXT,
         repairDate DATE,
-        repairStatus ENUM('In Progress', 'Pending', 'Completed'),
+        repairStatus ENUM('Pending', 'Assigned','Hold','In Progress','Completed', 'Cancelled'),
         repairCategory ENUM('Frame and Bodywork Repair', 'Battery Repair/Replacement', 'Camera and Gimbal Repair', 'Water Damage Repair'),
         FOREIGN KEY (pilotId) REFERENCES Pilots(pilot_id),
         FOREIGN KEY (droneId) REFERENCES DroneInventory(drone_id),

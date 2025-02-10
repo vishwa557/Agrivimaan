@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Typography, Button, Container, Grid } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import repair_image from '../Data/images/drone-repair.png';
-import spraying_image from '../Data/images/spraying-img.png';
+import repair_image from '../../Data/images/drone-repair.png';
+import spraying_image from '../../Data/images/spraying-img.png';
 
 
 const ServiceRequestForm = () => {
@@ -12,6 +12,9 @@ const ServiceRequestForm = () => {
     };
     const handleDroneSprayingRedirect = () => {
         navigate('/drone-spraying-form');
+    };
+    const handleFeedbackForm = () => {
+        navigate('/feedback-form');
     };
     return (
         <div>
@@ -70,6 +73,8 @@ const ServiceRequestForm = () => {
                             <Button variant="contained" color="primary" style={{ marginTop: '1rem' }} onClick={handleDroneSprayingRedirect}>
                                 Raise Chemical Spraiying Request
                             </Button>
+                            <Button variant="contained" color="primary" style={{ marginTop: '1rem' }} onClick={handleFeedbackForm}>
+                                FeedbacKForm</Button>
                         </Grid>
                     </Grid>
                 </div>
